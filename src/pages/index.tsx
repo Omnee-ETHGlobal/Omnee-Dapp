@@ -1,6 +1,5 @@
 import { useUser } from "@/context/web3UserContext";
 import React, { useState, ChangeEvent } from "react";
-import { baseSepoliaConfig, scrollSepoliaConfig, arbSepoliaConfig } from "@/config/chainConfig";
 
 const Home: React.FC = () => {
   const { login, loggedIn, logout, user, switchChain } = useUser();
@@ -36,6 +35,8 @@ const Home: React.FC = () => {
       {loggedIn && user?.loginMethod !== "MetaMask" && (
         <p>Logged in with Google</p>
       )}
+     
+
     </div>
   );
 };

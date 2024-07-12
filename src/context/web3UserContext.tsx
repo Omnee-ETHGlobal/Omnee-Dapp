@@ -56,12 +56,29 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 
-  const determineLoginMethod = async () => {
+const determineLoginMethod = async () => {
     const userInfo = await web3auth.getUserInfo();
-    return userInfo && userInfo.typeOfLogin === "google"
-      ? "Google"
-      : "MetaMask";
+    console.log(userInfo);
+  
+    if (userInfo) {
+      switch (userInfo.typeOfLogin) {
+        case "google":
+          return "Google";
+        case "metamask":
+          return "MetaMask";
+        case "sms_passwordless":
+          return "SMS";
+        case "email_passwordless":
+          return "Email";
+        default:
+          return "Unknown";
+      }
+    }
+  
+    return "Unknown";
   };
+  
+  
 
   const updateUser = async (loginMethod: string) => {
     try {
