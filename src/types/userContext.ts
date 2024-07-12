@@ -1,9 +1,10 @@
 // src/types/userContext.ts
 
 export interface User {
-    address: string;
-    balance: string;
-  }
+  address: string;
+  balance: string;
+  loginMethod: string; 
+}
   
   export interface UserContextType {
     user: User | null;
@@ -11,5 +12,6 @@ export interface User {
     login: () => Promise<void>;
     logout: () => Promise<void>;
     getBalance: () => Promise<void>;
+    switchChain: (id: any) => Promise<void>;
   }
   
