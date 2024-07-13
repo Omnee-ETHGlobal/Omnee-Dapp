@@ -11,8 +11,10 @@ import Link from "next/link";
 
 import React, { ChangeEvent, use, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { waitForTransactionReceipt } from "viem/actions";
+import { waitForTransactionReceipt } from "@wagmi/core";
 import { useWriteContract } from "wagmi";
+import { BLOCKSCOUT_BASE_URL } from "@/config/api/blockscoutApi";
+import { info } from "console";
 
 const App: React.FC = () => {
   const { writeContractAsync, data: hash } = useWriteContract();
@@ -23,7 +25,10 @@ const App: React.FC = () => {
   const [currentDeploy, setCurrentDeploy] = useState<BigInt | null>(null);
   const { data, error, loading } = useGraphQLQuery();
   const [selectedChains, setSelectedChains] = useState<number[]>([]);
-
+  const [deployLoading, setDeployLoading] = useState(false);
+  const [informationsFromDeployResult, setInformationsFromDeployResult] =
+    useState<any>(null);
+  console.log(informationsFromDeployResult);
   const estimateGasFees = async () => {
     if (!user?.address) return;
     try {
@@ -32,7 +37,7 @@ const App: React.FC = () => {
         selectedChains,
         `0x000301001101000000000000000000000000000f4240`
       );
-      console.log("nativeFee", nativeFee);  
+      console.log("nativeFee", nativeFee);
       return nativeFee;
     } catch (e) {
       console.error("Error estimating gas fees:", e);
@@ -40,32 +45,64 @@ const App: React.FC = () => {
   };
 
   const deployToUniversalFactory = async () => {
-    if (!user) return;
-    if (user.address) {
-      setDeploy(true);
-      try {
-        const estimatedFee = await estimateGasFees();
-        console.log(estimatedFee);
-        const tx = await writeContractAsync({
-          ...UniversalFactoryContract,
-          functionName: "deployOFT",
-          args: [deployData.name, deployData.symbol, selectedChains, `0x000301001101000000000000000000000000000f4240`],
-          value : estimatedFee
-        });
-        const result = await waitForTransactionReceipt(web3Config as any, {
-          hash: tx as any,
-        });
-        console.log(result);
-        if (result.status === "success") {
-          setUpdate(update + 1);
-          toast.success("Deploy successful");
-        } else {
-          toast.error("Error during transaction");
-        }
-      } catch (e) {
-        console.log(e);
+    if (!user || !user.address) return;
+    setDeployLoading(true);
+
+    try {
+      const estimatedFee = await estimateGasFees();
+      console.log("Estimated Fee:", estimatedFee);
+
+      const tx = await writeContractAsync({
+        ...UniversalFactoryContract,
+        functionName: "deployOFT",
+        args: [
+          deployData.name,
+          deployData.symbol,
+          selectedChains,
+          `0x000301001101000000000000000000000000000f4240`,
+        ],
+        value: estimatedFee,
+      });
+
+      const result = await waitForTransactionReceipt(web3Config as any, {
+        hash: tx as any,
+      });
+      console.log("Transaction Result:", result);
+
+      if (result.status === "success") {
+        toast.success(
+          <span>
+            Deploy successful!{" "}
+            <a
+              href={`${BLOCKSCOUT_BASE_URL}${result.transactionHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on Blockscout
+            </a>
+          </span>
+        );
+        setUpdate((prev) => prev + 1);
+        setDeploy(true);
+        setInformationsFromDeployResult(result);
+      } else {
+        toast.error("Error during transaction");
       }
+    } catch (error) {
+      console.error("Deployment Error:", error);
+      toast.error("Deployment failed. See console for details.");
+    } finally {
+      setDeployLoading(false);
     }
+  };
+
+  const tweetDeploymentResult = (result: any) => {
+    const tweetText = `I just deployed a new token thanks to @omneefun named ${deployData.name} with symbol ${deployData.symbol}! 
+    Check out the transaction here: ${BLOCKSCOUT_BASE_URL}${result.transactionHash}`;
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      tweetText
+    )}`;
+    window.open(twitterUrl, "_blank");
   };
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -95,17 +132,14 @@ const App: React.FC = () => {
     fetchCurrentDeploy();
   }, [update, deploy]);
 
-  useEffect(() => {
-    console.log(selectedChains);
-  },[selectedChains])
   return (
- <div className="container">
+    <div className="container">
       <h1 className="title text-center">Home Page</h1>
       <Link className="btn btn-primary" href="/app/123">
         Go to App Page with ID 123
       </Link>
       <div>
-      <div>
+        <div>
           <h2>OFT DEPLOYÉ {currentDeploy ? currentDeploy.toString() : "-"}</h2>
         </div>
         <h2>Set Name and Symbol</h2>
@@ -184,6 +218,14 @@ const App: React.FC = () => {
         <button className="btn btn-primary" onClick={deployToUniversalFactory}>
           Deploy
         </button>
+        {user?.loginMethod === "Twitter" && informationsFromDeployResult && (
+          <button
+            className="btn btn-primary"
+            onClick={() => tweetDeploymentResult(informationsFromDeployResult)}
+          >
+            Share on Twitter
+          </button>
+        )}
       </div>
     </div>
   );

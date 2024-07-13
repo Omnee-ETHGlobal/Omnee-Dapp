@@ -70,6 +70,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       switch (userInfo.typeOfLogin) {
         case "google":
           return "Google";
+        case "twitter":
+          return "Twitter";
         case "sms_passwordless":
           return "SMS";
         case "email_passwordless":
