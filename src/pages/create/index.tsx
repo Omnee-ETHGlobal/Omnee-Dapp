@@ -19,6 +19,7 @@ const Create: React.FC = () => {
       }
     });
   };
+  const [error, setError] = useState("");
   const [deployLoading, setDeployLoading] = useState(false);
   const [showFailedModal, setShowFailedModal] = useState(false);
   const [estimatedFee, setEstimatedFee] = useState<bigint | null>(null);
@@ -28,7 +29,6 @@ const Create: React.FC = () => {
     symbol: "",
   });
   const [step, setStep] = useState(0);
-  
 
   const getFees = async () => {
     const result = await estimateGasFees(deployData, selectedChains);
@@ -54,6 +54,15 @@ const Create: React.FC = () => {
       .filter((chain) => selectedChains.includes(chain.id))
       .map((chain) => chain.name)
       .join(", ");
+  };
+
+  const handleNextStep = () => {
+    if (!deployData.name || !deployData.symbol) {
+      setError("Error, please verify your information");
+    } else {
+      setError("");
+      setStep(step + 1);
+    }
   };
 
   const selectedChainNames = getSelectedChainNames(selectedChains, chains);
@@ -357,7 +366,6 @@ const Create: React.FC = () => {
                   >
                     Please provide the basic information for your token.
                   </p>
-                  <p />
                 </div>
               </div>
               <div
@@ -408,8 +416,8 @@ const Create: React.FC = () => {
                       }
                       type="text"
                       className="styled-input"
-                      placeholder="Enter the name of your project"
-                      id="inputText"
+                      placeholder="Enter the symbol of your token"
+                      id="inputSymbol"
                     />
                   </div>
                 </div>
@@ -422,19 +430,25 @@ const Create: React.FC = () => {
                 data-aos-easing="ease"
               >
                 <div className="col-12 col-sm-10 col-md-5 col-lg-5 text-start">
+                  {error && (
+                    <p className="question-error" style={{ color: "red" }}>
+                      {error}
+                    </p>
+                  )}
                   <a
-                    onClick={() => setStep(2)}
-                    className="primary-btn d-block text-center mb-2"
+                    onClick={handleNextStep}
+                    className="primary-btn d-block text-center mb-2 cursor-pointer"
                   >
                     Next step
                   </a>
-                  {/*<p class="question-error">Error, please verify your informations</p>*/}
-                  <a
-                    onClick={() => setStep(0)}
-                    className="simple-link d-block text-center mb-2"
-                  >
-                    Back
-                  </a>
+                  <div className="d-flex justify-content-center">
+                    <button
+                      onClick={() => setStep(0)}
+                      className="btn-back text-center mb-2 cursor-pointer"
+                    >
+                      Back
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -569,14 +583,21 @@ const Create: React.FC = () => {
                 </div>
               </div>
               <div className="row justify-content-center mb-5">
-                <div className="col-12 col-sm-10 col-md-5 col-lg-5 text-start">
+              <div className="col-12 col-sm-10 col-md-5 col-lg-5 text-start">
                   <a
                     onClick={() => setStep(3)}
-                    className="primary-btn d-block text-center mb-2"
+                    className="primary-btn d-block text-center mb-2 cursor-pointer"
                   >
                     Next step
                   </a>
-                  {/*<p class="question-error">Error, please verify your informations</p>*/}
+                  <div className="d-flex justify-content-center">
+                    <button
+                      onClick={() => setStep(1)}
+                      className="btn-back text-center mb-2 cursor-pointer"
+                    >
+                      Back
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -688,14 +709,18 @@ const Create: React.FC = () => {
                 <div className="col-12 col-sm-10 col-md-5 col-lg-5 text-start">
                   <a
                     onClick={() => setStep(4)}
-                    className="primary-btn d-block text-center mb-2"
+                    className="primary-btn d-block text-center mb-2 cursor-pointer"
                   >
                     Next step
                   </a>
-                  <a href="" className="simple-link d-block text-center mb-2">
-                    Back
-                  </a>
-                  {/*<p class="question-error">Error, please verify your informations</p>*/}
+                  <div className="d-flex justify-content-center">
+                    <button
+                      onClick={() => setStep(2)}
+                      className="btn-back text-center mb-2 cursor-pointer"
+                    >
+                      Back
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -848,7 +873,7 @@ const Create: React.FC = () => {
               </div>
 
               <div className="row justify-content-center mb-5">
-                <div className="col-12 col-sm-10 col-md-5 col-lg-5 text-start">
+              <div className="col-12 col-sm-10 col-md-5 col-lg-5 text-start">
                   <a
                     onClick={handleDeployClick}
                     data-toggle="modal"
@@ -857,10 +882,14 @@ const Create: React.FC = () => {
                   >
                     Confirm
                   </a>
-                  <a href="" className="simple-link d-block text-center mb-2">
-                    Back
-                  </a>
-                  {/*<p class="question-error">Error, please verify your informations</p>*/}
+                  <div className="d-flex justify-content-center">
+                    <button
+                      onClick={() => setStep(3)}
+                      className="btn-back text-center mb-2 cursor-pointer"
+                    >
+                      Back
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -10,7 +10,9 @@ body {
 
 /*colors*/
 
-
+.cursor-pointer {
+  cursor: pointer !important;
+}
 .white{
   color: #fff;
 }
@@ -73,7 +75,6 @@ body {
 
 .primary-btn {
   padding: 15px 30px;
-
   justify-content: center;
   align-items: center;
   border-radius: 10px;
@@ -95,6 +96,29 @@ body {
   /* Lift the button slightly */
 }
 
+.btn-back {
+  padding: 15px 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background: transparent;
+  text-decoration: none;
+  border: none;
+  color: #0F54FF;
+  font-weight: 500;
+
+  transition: 0.4s;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  /* Initial shadow */
+}
+
+.btn-back:hover {
+  color: white;
+  transition: 0.4s;
+
+  transform: translateY(-5px);
+  /* Lift the button slightly */
+}
 
 
 /*containers*/
