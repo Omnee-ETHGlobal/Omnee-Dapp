@@ -4,8 +4,9 @@ import {
   getCurrentDeploy,
   getQuoteDeployOFT,
   useUniversalFactory,
-} from "@/hooks/sc/UniversalFactoryContract";
+} from "@/hooks/UniversalFactory/UniversalFactoryContract";
 import { useGraphQLQuery } from "@/hooks/useGraphQlQuery";
+
 import Link from "next/link";
 
 import React, { ChangeEvent, use, useEffect, useState } from "react";
@@ -13,28 +14,26 @@ import { toast } from "react-toastify";
 import { waitForTransactionReceipt } from "viem/actions";
 import { useWriteContract } from "wagmi";
 
-const HomePage: React.FC = () => {
+const App: React.FC = () => {
   const { writeContractAsync, data: hash } = useWriteContract();
   const [update, setUpdate] = useState(0);
   const [deployData, setDeployData] = useState({ name: "", symbol: "" });
   const [deploy, setDeploy] = useState(false);
   const { user } = useUser();
-  const [estimatedFee, setEstimatedFee] = useState<BigInt | null>(null);
   const [currentDeploy, setCurrentDeploy] = useState<BigInt | null>(null);
   const { data, error, loading } = useGraphQLQuery();
-  const [selectedChains, setSelectedChains] = useState<number[]>([40170]);
+  const [selectedChains, setSelectedChains] = useState<number[]>([]);
 
   const estimateGasFees = async () => {
     if (!user?.address) return;
-
     try {
       const nativeFee = await getQuoteDeployOFT(
         deployData,
-        [40170, 40231],
-        `0x`
+        selectedChains,
+        `0x000301001101000000000000000000000000000f4240`
       );
-      setEstimatedFee(nativeFee);
-      console.log("Estimated native fee:", nativeFee.toString());
+      console.log("nativeFee", nativeFee);  
+      return nativeFee;
     } catch (e) {
       console.error("Error estimating gas fees:", e);
     }
@@ -45,15 +44,18 @@ const HomePage: React.FC = () => {
     if (user.address) {
       setDeploy(true);
       try {
+        const estimatedFee = await estimateGasFees();
+        console.log(estimatedFee);
         const tx = await writeContractAsync({
           ...UniversalFactoryContract,
           functionName: "deployOFT",
-          args: [deployData.name, deployData.symbol, selectedChains, `0x`],
+          args: [deployData.name, deployData.symbol, selectedChains, `0x000301001101000000000000000000000000000f4240`],
+          value : estimatedFee
         });
         const result = await waitForTransactionReceipt(web3Config as any, {
           hash: tx as any,
         });
-
+        console.log(result);
         if (result.status === "success") {
           setUpdate(update + 1);
           toast.success("Deploy successful");
@@ -94,7 +96,7 @@ const HomePage: React.FC = () => {
   }, [update, deploy]);
 
   useEffect(() => {
-    console.log(data);
+    console.log(selectedChains);
   },[selectedChains])
   return (
  <div className="container">
@@ -146,7 +148,7 @@ const HomePage: React.FC = () => {
             <input
               type="checkbox"
               id="scrollSepolia"
-              value="40231"
+              value="40170"
               onChange={handleChainChange}
             />
             <label htmlFor="scrollSepolia">Scroll Sepolia</label>
@@ -155,7 +157,7 @@ const HomePage: React.FC = () => {
             <input
               type="checkbox"
               id="arbitrumSepolia"
-              value="40302"
+              value="40231"
               onChange={handleChainChange}
             />
             <label htmlFor="arbitrumSepolia">Arbitrum Sepolia</label>
@@ -187,4 +189,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default App;

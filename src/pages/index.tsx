@@ -1,4 +1,3 @@
-import { UniversalFactoryContract, web3Config } from "@/config";
 import { useUser } from "@/context/web3UserContext";
 import Link from "next/link";
 import React, { useState, ChangeEvent, useEffect } from "react";

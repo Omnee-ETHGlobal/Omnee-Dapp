@@ -31,7 +31,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
             loginMethods: {
               facebook: { name: "facebook", showOnModal: false },
               reddit: { name: "reddit", showOnModal: false },
-              twitter: { name: "twitter", showOnModal: false },
+              twitter: { name: "twitter", showOnModal: true },
               discord: { name: "discord", showOnModal: false },
               line: { name: "line", showOnModal: false },
               linkedin: { name: "linkedin", showOnModal: false },
