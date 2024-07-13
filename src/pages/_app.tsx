@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { AppProps } from "next/app";
 import { UserProvider } from "@/context/web3UserContext";
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'react-toastify/dist/ReactToastify.css';
 import "../style.css";
 import client from "@/config/apolloClient";
 import { ApolloProvider } from "@apollo/client";

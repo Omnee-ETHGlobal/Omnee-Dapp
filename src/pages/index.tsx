@@ -3,8 +3,6 @@ import { useUser } from "@/context/web3UserContext";
 import Link from "next/link";
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { toast } from "react-toastify";
-import { waitForTransactionReceipt } from "viem/actions";
-import { useWriteContract } from "wagmi";
 
 const Home: React.FC = () => {
   const { login, loggedIn, logout, user, switchChain, loading } = useUser();
@@ -32,7 +30,7 @@ const Home: React.FC = () => {
       <button className="btn btn-primary" onClick={logout} disabled={loading}>
         {loading ? "Loading..." : "Logout"}
       </button>
-      {user?.loginMethod === "MetaMask" && (
+      {user?.loginMethod === "Metamask" && (
         <>
           <p>Logged in with MetaMask</p>
           <label htmlFor="chainSelect">Switch Network:</label>

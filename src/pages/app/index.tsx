@@ -6,7 +6,6 @@ import {
   useUniversalFactory,
 } from "@/hooks/sc/UniversalFactoryContract";
 import { useGraphQLQuery } from "@/hooks/useGraphQlQuery";
-import { ethers } from "ethers";
 import Link from "next/link";
 
 import React, { ChangeEvent, use, useEffect, useState } from "react";
@@ -22,7 +21,7 @@ const HomePage: React.FC = () => {
   const { user } = useUser();
   const [estimatedFee, setEstimatedFee] = useState<BigInt | null>(null);
   const [currentDeploy, setCurrentDeploy] = useState<BigInt | null>(null);
-  const { data } = useGraphQLQuery();
+  const { data, error, loading } = useGraphQLQuery();
   const [selectedChains, setSelectedChains] = useState<number[]>([40170]);
 
   const estimateGasFees = async () => {
@@ -95,7 +94,7 @@ const HomePage: React.FC = () => {
   }, [update, deploy]);
 
   useEffect(() => {
-    console.log(selectedChains);
+    console.log(data);
   },[selectedChains])
   return (
  <div className="container">
@@ -104,6 +103,9 @@ const HomePage: React.FC = () => {
         Go to App Page with ID 123
       </Link>
       <div>
+      <div>
+          <h2>OFT DEPLOYÉ {currentDeploy ? currentDeploy.toString() : "-"}</h2>
+        </div>
         <h2>Set Name and Symbol</h2>
         <div className="form-group">
           <label htmlFor="nameInput">Name:</label>
@@ -180,7 +182,6 @@ const HomePage: React.FC = () => {
         <button className="btn btn-primary" onClick={deployToUniversalFactory}>
           Deploy
         </button>
-        <p>Current deploy: {currentDeploy ? currentDeploy.toString() : "-"}</p>
       </div>
     </div>
   );

@@ -87,13 +87,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       const web3 = new Web3(web3auth.provider as any);
       const accounts = await web3.eth.getAccounts();
       if (!accounts.length) throw new Error("No accounts found");
-
       const address = accounts[0];
       const balance = web3.utils.fromWei(
         await web3.eth.getBalance(address),
         "ether"
       );
-
+      console.log(balance);
       setUser({
         address,
         balance,
@@ -135,13 +134,20 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("User not initialized yet");
       return;
     }
-    const web3 = new Web3(web3auth.provider as any);
-    const newBalance = web3.utils.fromWei(
-      await web3.eth.getBalance(user.address),
-      "ether"
-    );
-    setUser({ ...user, balance: newBalance });
+    
+    try {
+      const web3 = new Web3(web3auth.provider as any);
+      const newBalance = web3.utils.fromWei(
+        await web3.eth.getBalance(user.address),
+        "ether"
+      );
+      setUser({ ...user, balance: newBalance });
+      console.log("Balance updated:", newBalance);
+    } catch (error) {
+      console.error("Failed to get balance:", error);
+    }
   };
+  
   const switchChain = async (id: string) => {
     try {
       switch (id) {
@@ -170,11 +176,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           await web3auth.switchChain({ chainId: baseSepoliaConfig.chainId });
           break;
       }
+            
       await getBalance();
     } catch (error) {
       console.error("Failed to switch chain:", error);
     }
   };
+  
 
   return (
     <UserContext.Provider
