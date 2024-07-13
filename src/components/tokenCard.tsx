@@ -1,5 +1,7 @@
-import Link from 'next/link';
-import React from 'react';
+
+import { getTokenPrice } from "@/hooks/BondingCurvFactory/useBondingCurvContracts";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
 interface ChainLogos {
   [key: string]: string;
@@ -13,26 +15,53 @@ const CHAIN_LOGOS: ChainLogos = {
 };
 
 const TokenCard: React.FC<TokenProps> = ({ token }) => {
+  const [tokenPrice, setTokenPrice] =useState<BigInt | null>(null);
+  const [getPrice, setGetPrice] = useState(false);
+  const [priceLoading, setPriceLoading] = useState(false);
+  useEffect(() => {
+    const fetchCurrentDeploy = async () => {
+      try {
+        setGetPrice(true);
+        console.log(token.param0);
+        const price = await getTokenPrice(token.param0);
+        setTokenPrice(price);
+      } catch (e) {
+        console.error("Error fetching current deploy ID:", e);
+      } finally {
+        setPriceLoading(false);
+      }
+    };
+    fetchCurrentDeploy();
+  }, []);
+
   const renderChainLogos = (chainIds: string[]) => {
-    return chainIds.map(chainId => {
+    return chainIds.map((chainId) => {
       const logoUrl = CHAIN_LOGOS[chainId];
       if (!logoUrl) {
         console.error(`Logo not found for chainId: ${chainId}`);
         return null;
       }
       return (
-        <img key={chainId} className="chain-logo" src={logoUrl} alt={`${chainId} logo`} />
+        <img
+          key={chainId}
+          className="chain-logo"
+          src={logoUrl}
+          alt={`${chainId} logo`}
+        />
       );
     });
   };
-  console.log(token);
   return (
     <div className="col-md-3">
-      <Link className="text-decoration-none" href={`/app/${token.param0}`}>
+      <Link className="text-decoration-none" href={`/token/${token.param0}`}>
         <div className="card-token">
           <div className="row d-flex align-items-center mb-5">
             <div className="col-3 text-start">
-              <img className="token-picture" src="/images/tokenpicture.png" alt="Token Picture" />
+              <img
+                className="token-picture"
+                src="/images/tokenpicture.png"
+                alt="Token Picture"
+              />
             </div>
             <div className="col-9 text-end">
               {renderChainLogos(token.param3)}
@@ -44,7 +73,7 @@ const TokenCard: React.FC<TokenProps> = ({ token }) => {
               <h4 className="card-token-pair">{token.param2}/ETH</h4>
             </div>
             <div className="col-6 d-flex flex-column justify-content-end align-items-end">
-              <h3 className="card-token-price">{token.param4} Ξ</h3>
+              <h3 className="card-token-price">{tokenPrice?.toString()} Ξ</h3>
             </div>
           </div>
         </div>

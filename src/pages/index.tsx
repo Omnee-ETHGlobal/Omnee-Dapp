@@ -17,9 +17,8 @@ const Home: React.FC = () => {
   return (
     <div className="container">
       <h1 className="title text-center red-title">LANDING</h1>
-
       <LoginButton />
-  
+    
           {user?.loginMethod === "Metamask" && (
             <>
               <p>Logged in with MetaMask</p>
@@ -33,13 +32,11 @@ const Home: React.FC = () => {
                 <option value="2">Scroll Sepolia</option>
                 <option value="3">Arbitrum Sepolia</option>
                 <option value="4">Optimism Sepolia</option>
-                <option value="5">Ethereum Sepolia</option>
               </select>
             </>
           )}
-     
-
-      <Link href="/app">Launch App</Link>
+      <Link href="/app">Launch App</Link><br />
+      <Link href="/home">CREATE TOKEN</Link>
     </div>
   );
 };

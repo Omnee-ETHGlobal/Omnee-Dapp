@@ -14,5 +14,6 @@ export interface User {
     logout: () => Promise<void>;
     getBalance: () => Promise<void>;
     switchChain: (id: any) => Promise<void>;
+    ethersSigner : any;
   }
   

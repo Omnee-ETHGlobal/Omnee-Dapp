@@ -9,6 +9,10 @@ import {
   optimismSepoliaConfig,
   scrollSepoliaConfig,
 } from "@/config/chainConfig";
+import { toast } from "react-toastify";
+import { ethers } from "ethers";
+import { createPublicClient } from "viem";
+
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -17,6 +21,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [ethersSigner, setEthersSigner] = useState<ethers.Signer | null>(null);
 
   useEffect(() => {
     initWeb3Auth();
@@ -31,7 +36,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
             loginMethods: {
               facebook: { name: "facebook", showOnModal: false },
               reddit: { name: "reddit", showOnModal: false },
-              twitter: { name: "twitter", showOnModal: true },
+              twitter: { name: "twitter", showOnModal: false },
               discord: { name: "discord", showOnModal: false },
               line: { name: "line", showOnModal: false },
               linkedin: { name: "linkedin", showOnModal: false },
@@ -65,17 +70,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const determineLoginMethod = async () => {
     const userInfo = await web3auth.getUserInfo();
     console.log(userInfo);
-
     if (userInfo) {
       switch (userInfo.typeOfLogin) {
         case "google":
           return "Google";
-        case "twitter":
-          return "Twitter";
-        case "sms_passwordless":
-          return "SMS";
-        case "email_passwordless":
-          return "Email";
         default:
           return "Metamask";
       }
@@ -87,6 +85,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const updateUser = async (loginMethod: string) => {
     try {
       const web3 = new Web3(web3auth.provider as any);
+
+      if (await determineLoginMethod() == "Google") {
+        const provider = new ethers.providers.Web3Provider(web3auth.provider as any);
+        const signer = provider.getSigner();
+        setEthersSigner(signer);
+      }
+
       const accounts = await web3.eth.getAccounts();
       if (!accounts.length) throw new Error("No accounts found");
       const address = accounts[0];
@@ -120,7 +125,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-
   const logout = async () => {
     try {
       await web3auth.logout();
@@ -139,6 +143,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     
     try {
       const web3 = new Web3(web3auth.provider as any);
+
+      console.log("provider", web3auth.provider)
       const newBalance = web3.utils.fromWei(
         await web3.eth.getBalance(user.address),
         "ether"
@@ -184,11 +190,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("Failed to switch chain:", error);
     }
   };
-  
 
   return (
     <UserContext.Provider
-      value={{ user, loggedIn, login, logout, getBalance, switchChain, loading }}
+      value={{ user, loggedIn, login, logout, getBalance, switchChain, loading, ethersSigner }}
     >
       {children}
     </UserContext.Provider>
