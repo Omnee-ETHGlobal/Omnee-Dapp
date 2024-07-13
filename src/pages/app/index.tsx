@@ -23,6 +23,7 @@ const HomePage: React.FC = () => {
   const [estimatedFee, setEstimatedFee] = useState<BigInt | null>(null);
   const [currentDeploy, setCurrentDeploy] = useState<BigInt | null>(null);
   const { data } = useGraphQLQuery();
+  const [selectedChains, setSelectedChains] = useState<number[]>([40170]);
 
   const estimateGasFees = async () => {
     if (!user?.address) return;
@@ -48,7 +49,7 @@ const HomePage: React.FC = () => {
         const tx = await writeContractAsync({
           ...UniversalFactoryContract,
           functionName: "deployOFT",
-          args: [deployData.name, deployData.symbol],
+          args: [deployData.name, deployData.symbol, selectedChains, `0x`],
         });
         const result = await waitForTransactionReceipt(web3Config as any, {
           hash: tx as any,
@@ -71,7 +72,14 @@ const HomePage: React.FC = () => {
     setDeployData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleChainChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target;
+    const chainId = parseInt(value);
 
+    setSelectedChains((prev) =>
+      checked ? [...prev, chainId] : prev.filter((id) => id !== chainId)
+    );
+  };
 
   useEffect(() => {
     const fetchCurrentDeploy = async () => {
@@ -85,8 +93,12 @@ const HomePage: React.FC = () => {
 
     fetchCurrentDeploy();
   }, [update, deploy]);
+
+  useEffect(() => {
+    console.log(selectedChains);
+  },[selectedChains])
   return (
-    <div className="container">
+ <div className="container">
       <h1 className="title text-center">Home Page</h1>
       <Link className="btn btn-primary" href="/app/123">
         Go to App Page with ID 123
@@ -115,10 +127,60 @@ const HomePage: React.FC = () => {
             className="form-control"
           />
         </div>
+        <div className="form-group">
+          <h3>Select Chains</h3>
+          <div>
+            <input
+              type="checkbox"
+              id="baseSepolia"
+              value="40170"
+              checked
+              disabled
+              onChange={handleChainChange}
+            />
+            <label htmlFor="baseSepolia">Base Sepolia</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="scrollSepolia"
+              value="40231"
+              onChange={handleChainChange}
+            />
+            <label htmlFor="scrollSepolia">Scroll Sepolia</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="arbitrumSepolia"
+              value="40302"
+              onChange={handleChainChange}
+            />
+            <label htmlFor="arbitrumSepolia">Arbitrum Sepolia</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="optimismSepolia"
+              value="40403"
+              onChange={handleChainChange}
+            />
+            <label htmlFor="optimismSepolia">Optimism Sepolia</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="ethereumSepolia"
+              value="40504"
+              onChange={handleChainChange}
+            />
+            <label htmlFor="ethereumSepolia">Ethereum Sepolia</label>
+          </div>
+        </div>
         <button className="btn btn-primary" onClick={deployToUniversalFactory}>
-          Deployer
+          Deploy
         </button>
-        <p>Current deploy: {currentDeploy ? currentDeploy.toString() : "-"} </p>
+        <p>Current deploy: {currentDeploy ? currentDeploy.toString() : "-"}</p>
       </div>
     </div>
   );
