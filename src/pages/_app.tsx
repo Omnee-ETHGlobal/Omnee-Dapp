@@ -3,6 +3,8 @@ import { AppProps } from 'next/app';
 import { UserProvider } from '@/context/web3UserContext';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../style.css"
+import { ApolloProvider } from '@apollo/client';
+
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   useEffect(() => {

@@ -5,6 +5,8 @@ import { web3auth } from "@/config/web3AuthConfig";
 import {
   arbSepoliaConfig,
   baseSepoliaConfig,
+  ethereumSepoliaConfig,
+  optimismSepoliaConfig,
   scrollSepoliaConfig,
 } from "@/config/chainConfig";
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -67,14 +69,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       switch (userInfo.typeOfLogin) {
         case "google":
           return "Google";
-        case "metamask":
-          return "MetaMask";
         case "sms_passwordless":
           return "SMS";
         case "email_passwordless":
           return "Email";
         default:
-          return "Unknown";
+          return "Metamask";
       }
     }
 
@@ -151,6 +151,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         case "3":
           await web3auth.addChain(arbSepoliaConfig);
           await web3auth.switchChain({ chainId: arbSepoliaConfig.chainId });
+          break;
+        case "4":
+          await web3auth.addChain(optimismSepoliaConfig);
+          await web3auth.switchChain({ chainId: optimismSepoliaConfig.chainId });
+          break;
+        case "5":
+          await web3auth.addChain(ethereumSepoliaConfig);
+          await web3auth.switchChain({ chainId: ethereumSepoliaConfig.chainId });
           break;
         default:
           await web3auth.addChain(baseSepoliaConfig);

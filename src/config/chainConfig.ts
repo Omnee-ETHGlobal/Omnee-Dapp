@@ -31,3 +31,23 @@ export const arbSepoliaConfig: CustomChainConfig = {
   ticker: "ETH",
   tickerName: "Ethereum on Arbitrum Sepolia",
 };
+
+export const optimismSepoliaConfig: CustomChainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xaa37dc",
+  rpcTarget: "https://sepolia.optimism.io",
+  displayName: "Optimism Sepolia",
+  blockExplorerUrl: "https://sepolia-optimism.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum on Optimism Sepolia",
+};
+
+export const ethereumSepoliaConfig: CustomChainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
+  chainId: "0xaa36a7",
+  rpcTarget: "https://eth-sepolia.g.alchemy.com/v2/demo",
+  displayName: "Ethereum Sepolia",
+  blockExplorerUrl: "https://sepolia.etherscan.io",
+  ticker: "ETH",
+  tickerName: "Ethereum on Sepolia",
+};

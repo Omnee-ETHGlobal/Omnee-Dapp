@@ -5,7 +5,7 @@ const HomePage: React.FC = () => {
     return (
         <div className="container">
             <h1 className="title text-center">Home Page</h1>
-            <a className="btn btn-primary">Go to App Page with ID 123</a>
+            <Link className="btn btn-primary" href='/app/123'>Go to App Page with ID 123</Link>
         </div>
     );
 };

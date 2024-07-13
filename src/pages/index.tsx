@@ -1,6 +1,6 @@
 import { useUser } from "@/context/web3UserContext";
 import Link from "next/link";
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 
 const Home: React.FC = () => {
   const { login, loggedIn, logout, user, switchChain } = useUser();
@@ -11,6 +11,10 @@ const Home: React.FC = () => {
     setChain(newChainId);
     await switchChain(newChainId);
   };
+  
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   return (
     <div className="container">
@@ -20,7 +24,7 @@ const Home: React.FC = () => {
       ) : (
         <>
           <button className="btn btn-primary" onClick={logout}>Logout</button>
-          {user?.loginMethod === "MetaMask" && (
+          {user?.loginMethod === "Metamask" && (
             <>
               <p>Logged in with MetaMask</p>
               <label htmlFor="chainSelect">Switch Network:</label>
@@ -32,6 +36,8 @@ const Home: React.FC = () => {
                 <option value="1">Base Sepolia</option>
                 <option value="2">Scroll Sepolia</option>
                 <option value="3">Arbitrum Sepolia</option>
+                <option value="4">Optimism Sepolia</option>
+                <option value="5">Ethereum Sepolia</option>
               </select>
             </>
           )}
