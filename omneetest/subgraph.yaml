@@ -1,0 +1,32 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: UniversalFactory
+    network: base-sepolia
+    source:
+      address: "0xF803d75844195266E9a0Db97b17832Bb14F5Ca91"
+      abi: UniversalFactory
+      startBlock: 12555531
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - OFTCreated
+        - OwnershipTransferred
+        - PeerSet
+      abis:
+        - name: UniversalFactory
+          file: ./abis/UniversalFactory.json
+      eventHandlers:
+        - event: OFTCreated(address,string,string,uint32[],uint256)
+          handler: handleOFTCreated
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PeerSet(uint32,bytes32)
+          handler: handlePeerSet
+      file: ./src/universal-factory.ts

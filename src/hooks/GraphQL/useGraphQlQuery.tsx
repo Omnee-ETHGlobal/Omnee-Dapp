@@ -13,6 +13,6 @@ const GET_DATA = gql`
 
 export const useGraphQLQuery = () => {
   const { loading, error, data } = useQuery(GET_DATA);
-
+  
   return { loading, error, data };
 };

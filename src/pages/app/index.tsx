@@ -5,13 +5,14 @@ import {
   getQuoteDeployOFT,
   useUniversalFactory,
 } from "@/hooks/UniversalFactory/UniversalFactoryContract";
-import { useGraphQLQuery } from "@/hooks/useGraphQlQuery";
+
 import Link from "next/link";
 import React, { ChangeEvent, use, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { useWriteContract } from "wagmi";
 import { BLOCKSCOUT_BASE_URL } from "@/config/api/blockscoutApi";
+import { useGraphQLQuery } from "@/hooks/GraphQL/useGraphQlQuery";
 
 const App: React.FC = () => {
   const { writeContractAsync, data: hash } = useWriteContract();
@@ -26,7 +27,6 @@ const App: React.FC = () => {
   const [informationsFromDeployResult, setInformationsFromDeployResult] =
     useState<any>(null);
 
-  console.log(data);
   const estimateGasFees = async () => {
     if (!user?.address) return;
     try {
@@ -84,7 +84,6 @@ const App: React.FC = () => {
       }
     } catch (error) {
       console.error("Deployment Error:", error);
-      toast.error("Deployment failed. See console for details.");
     } finally {
       setDeployLoading(false);
     }
@@ -121,6 +120,8 @@ const App: React.FC = () => {
       } catch (e) {
         console.error("Error fetching current deploy ID:", e);
       }
+      console.log(data);
+      console.log(error);
     };
 
     fetchCurrentDeploy();
@@ -194,19 +195,10 @@ const App: React.FC = () => {
             <input
               type="checkbox"
               id="optimismSepolia"
-              value="40403"
+              value="40232"
               onChange={handleChainChange}
             />
             <label htmlFor="optimismSepolia">Optimism Sepolia</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              id="ethereumSepolia"
-              value="40504"
-              onChange={handleChainChange}
-            />
-            <label htmlFor="ethereumSepolia">Ethereum Sepolia</label>
           </div>
         </div>
         <button className="btn btn-primary" onClick={deployToUniversalFactory}>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { multicall } from "@wagmi/core";
-import { ethers } from "ethers";
 import { UniversalFactoryContract, web3Config } from "@/config";
 
 export const useUniversalFactory = (
@@ -66,6 +65,5 @@ export const getQuoteDeployOFT = async (
           },
       ],
     });
-    console.log(response);
     return response[0].result as bigint;
   };
