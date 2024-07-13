@@ -6,15 +6,12 @@ import {
   useUniversalFactory,
 } from "@/hooks/UniversalFactory/UniversalFactoryContract";
 import { useGraphQLQuery } from "@/hooks/useGraphQlQuery";
-
 import Link from "next/link";
-
 import React, { ChangeEvent, use, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { useWriteContract } from "wagmi";
 import { BLOCKSCOUT_BASE_URL } from "@/config/api/blockscoutApi";
-import { info } from "console";
 
 const App: React.FC = () => {
   const { writeContractAsync, data: hash } = useWriteContract();
@@ -28,7 +25,8 @@ const App: React.FC = () => {
   const [deployLoading, setDeployLoading] = useState(false);
   const [informationsFromDeployResult, setInformationsFromDeployResult] =
     useState<any>(null);
-  console.log(informationsFromDeployResult);
+
+  console.log(data);
   const estimateGasFees = async () => {
     if (!user?.address) return;
     try {
@@ -37,7 +35,6 @@ const App: React.FC = () => {
         selectedChains,
         `0x000301001101000000000000000000000000000f4240`
       );
-      console.log("nativeFee", nativeFee);
       return nativeFee;
     } catch (e) {
       console.error("Error estimating gas fees:", e);
@@ -50,8 +47,6 @@ const App: React.FC = () => {
 
     try {
       const estimatedFee = await estimateGasFees();
-      console.log("Estimated Fee:", estimatedFee);
-
       const tx = await writeContractAsync({
         ...UniversalFactoryContract,
         functionName: "deployOFT",
@@ -67,7 +62,6 @@ const App: React.FC = () => {
       const result = await waitForTransactionReceipt(web3Config as any, {
         hash: tx as any,
       });
-      console.log("Transaction Result:", result);
 
       if (result.status === "success") {
         toast.success(

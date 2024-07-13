@@ -1,4 +1,310 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+body{
+  font-family: "Manrope", sans-serif !important;
+  background-color: black;
+  letter-spacing: -4% !important;
+}
 
-.red-title {
-  color: red;
+/*colors*/
+
+/*     Titles & text     */
+
+
+.hero-title{
+  font-weight: 500;
+  font-size: 58px;
+  letter-spacing: -4%;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent;
+}
+.section-title{
+  font-weight: 500;
+  font-size: 42px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent;
+}
+.hero-subtitle{
+  font-size: 16px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent;
+  font-weight: 200;
+}
+
+.section-hero{
+  padding-top: 150px;
+
+}
+
+
+
+/*containers*/
+
+.container-o {
+width: 80% !important;
+margin: 0 auto !important;
+}
+
+
+.container-nav {
+width: 80%;
+margin: 0 auto;
+
+}
+
+
+@media only screen and (max-width: 480px) {
+.container-o {
+  width: 90% !important;
+  margin: 0 auto;
+}
+
+
+.container-nav {
+  width: 96%;
+
+}
+
+}
+
+/*button*/
+
+.simple-link {
+font-size: 14px;
+font-weight: 300;
+text-decoration: none;
+color: white;
+transition: 0.5s;
+}
+
+.simple-link:hover {
+color: #6F21FD;
+transition: 0.5s;
+}
+
+
+
+
+/*nav*/
+
+.navbarz-mobile {
+background-color: rgba(255, 255, 255, 0.05) !important;
+box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+transition: 0.8s;
+}
+
+
+.navbarz {
+padding: 15px;
+background-color: rgba(255, 255, 255, 0.05);
+backdrop-filter: blur(20px);
+border-radius: 10px;
+transition: 0.8s;
+box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+
+/* Custom navbar styling */
+.navbar {
+background-color: #fff;
+/* White background */
+box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
+/* Subtle shadow for depth */
+}
+
+.navbar-brand {
+font-weight: 600;
+color: #000;
+/* Black for the brand */
+}
+
+.nav-link {
+color: #555;
+/* Dark grey for links */
+margin-right: 15px;
+/* Spacing between nav items */
+font-size: 1rem;
+/* Font size for links */
+}
+
+.nav-link:hover,
+.nav-link:focus {
+color: #000;
+/* Black color on hover/focus for better interaction feedback */
+}
+
+
+
+.container-nav.fixed-top {
+transition: top 0.3s;
+/* Douce transition pour la montée et la descente */
+z-index: 1030;
+/* Haute valeur pour rester au-dessus des autres éléments */
+}
+
+.navbar-hidden {
+top: -120px;
+/* Adaptez cette valeur pour assurer que le conteneur est complètement caché */
+}
+
+
+.container-nav {
+transition: background-color 0.3s ease;
+}
+
+.container-nav a,
+.container-nav svg {
+transition: color 0.3s ease;
+}
+
+
+/*pills*/
+
+.pill-step {
+background: rgb(44, 33, 253,0.3);
+font-size: 16px;
+padding: 10px 20px;
+border-radius: 50px;
+font-weight: 300;
+letter-spacing: -0.5;
+  color: #0F54FF;
+  display: inline-block;
+
+}
+
+
+
+.token-card {
+  background-color: #222;
+  color: white;
+  border-radius: 15px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.token-image-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.token-image {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background-color: gray;
+}
+
+.eth-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid #222;
+}
+
+.chain-icons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.chain-icons img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.token-info h5 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.token-info p {
+  margin: 0;
+  font-size: 1rem;
+  color: gray;
+}
+
+.token-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: right;
+}
+
+
+/*card-token-list*/
+
+
+.token-picture{
+  width: 60px;
+  height: 60px;
+  border-radius: 1000px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; 
+}
+
+.eth-over{
+  width: 40px;
+  height: 40px;
+  border-radius: 1000px;
+  background-image: url('../public/images/eth.png');
+  background-position: center; 
+  background-repeat: no-repeat;
+  background-size: cover; 
+}
+
+.chain-logo{
+  width: 35px;
+  height: 35px;
+  border-radius: 1000px;
+  margin-left: -20px;
+  border: 1px solid black;
+}
+
+.card-token {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-token:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.card-token-name{
+  
+  font-size: 30px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: -4% !important;
+}
+
+.card-token-pair{
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 100;
+  font-family: "Manrope", sans-serif !important;
+  
+}
+
+.card-token-price{
+  font-size: 24px;
+  color: white;
+  font-weight: 400;
 }
