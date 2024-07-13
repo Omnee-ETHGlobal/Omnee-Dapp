@@ -3,7 +3,7 @@ import Link from "next/link";
 import React, { useState, ChangeEvent, useEffect } from "react";
 
 const Home: React.FC = () => {
-  const { login, loggedIn, logout, user, switchChain } = useUser();
+  const { login, loggedIn, logout, user, switchChain, loading } = useUser();
   const [chain, setChain] = useState("1");
 
   const handleChainSwitch = async (event: ChangeEvent<HTMLSelectElement>) => {
@@ -12,19 +12,19 @@ const Home: React.FC = () => {
     await switchChain(newChainId);
   };
   
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   return (
     <div className="container">
       <h1 className="title text-center red-title">Welcome to the Home Page</h1>
       {!loggedIn ? (
-        <button className="btn btn-primary" onClick={login}>Login</button>
+        <button className="btn btn-primary" onClick={login} disabled={loading}>
+          {loading ? "Loading..." : "Login"}
+        </button>
       ) : (
         <>
-          <button className="btn btn-primary" onClick={logout}>Logout</button>
-          {user?.loginMethod === "Metamask" && (
+          <button className="btn btn-primary" onClick={logout} disabled={loading}>
+            {loading ? "Loading..." : "Logout"}
+          </button>
+          {user?.loginMethod === "MetaMask" && (
             <>
               <p>Logged in with MetaMask</p>
               <label htmlFor="chainSelect">Switch Network:</label>

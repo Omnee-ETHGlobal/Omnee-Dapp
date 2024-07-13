@@ -9,6 +9,7 @@ export interface User {
   export interface UserContextType {
     user: User | null;
     loggedIn: boolean;
+    loading: boolean;
     login: () => Promise<void>;
     logout: () => Promise<void>;
     getBalance: () => Promise<void>;

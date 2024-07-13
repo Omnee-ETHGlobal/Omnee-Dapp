@@ -16,6 +16,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     initWeb3Auth();
@@ -105,6 +106,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = async () => {
     try {
+      setLoading(true); 
       await web3auth.connect();
       setLoggedIn(true);
       const loginMethod = await determineLoginMethod();
@@ -112,8 +114,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     } catch (error) {
       console.error("Login failed:", error);
       setLoggedIn(false);
+    } finally {
+      setLoading(false); 
     }
   };
+
 
   const logout = async () => {
     try {
@@ -173,7 +178,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <UserContext.Provider
-      value={{ user, loggedIn, login, logout, getBalance, switchChain }}
+      value={{ user, loggedIn, login, logout, getBalance, switchChain, loading }}
     >
       {children}
     </UserContext.Provider>

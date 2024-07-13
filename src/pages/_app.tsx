@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { UserProvider } from '@/context/web3UserContext';
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../style.css"
-import { ApolloProvider } from '@apollo/client';
+import "../style.css";
 
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
