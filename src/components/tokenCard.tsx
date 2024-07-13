@@ -14,6 +14,8 @@ const CHAIN_LOGOS: ChainLogos = {
   "40232": "/images/chains/op.png",
 };
 
+const defaultLogoUrl = '/images/chains/base.png';
+
 const TokenCard: React.FC<TokenProps> = ({ token }) => {
   const [tokenPrice, setTokenPrice] =useState<BigInt | null>(null);
   const [getPrice, setGetPrice] = useState(false);
@@ -33,24 +35,31 @@ const TokenCard: React.FC<TokenProps> = ({ token }) => {
     };
     fetchCurrentDeploy();
   }, []);
-
   const renderChainLogos = (chainIds: string[]) => {
+    const defaultLogoUrl = "/images/chains/base.png";  
+
     return chainIds.map((chainId) => {
-      const logoUrl = CHAIN_LOGOS[chainId];
-      if (!logoUrl) {
-        console.error(`Logo not found for chainId: ${chainId}`);
-        return null;
-      }
-      return (
-        <img
-          key={chainId}
-          className="chain-logo"
-          src={logoUrl}
-          alt={`${chainId} logo`}
-        />
-      );
+        const specificLogoUrl = CHAIN_LOGOS[chainId];
+
+        return (
+            <React.Fragment key={chainId}>
+                <img
+                    className="chain-logo"
+                    src={defaultLogoUrl}
+                    alt="Default logo"
+                />
+                {specificLogoUrl && (
+                    <img
+                        className="chain-logo"
+                        src={specificLogoUrl}
+                        alt={`${chainId} logo`}
+                    />
+                )}
+            </React.Fragment>
+        );
     });
-  };
+};
+
   return (
     <div className="col-md-3">
       <Link className="text-decoration-none" href={`/token/${token.param0}`}>

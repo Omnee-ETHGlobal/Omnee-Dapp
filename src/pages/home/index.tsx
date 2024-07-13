@@ -15,21 +15,22 @@ import { BLOCKSCOUT_BASE_URL } from "@/config/api/blockscoutApi";
 import { ethers } from "ethers";
 import useDeployByLoginMethod from "@/hooks/useDeployContract";
 import { DeployData } from "@/types/deployData";
+import useBondingContract from "@/hooks/BondingCurvFactory/useBondingCurvContracts";
 
 const App: React.FC = () => {
-  const { deployByLoginMethod, deployLoading } = useDeployByLoginMethod();
+  const { user } = useUser();
+  const { deployByLoginMethod, deployLoading,  } = useDeployByLoginMethod();
   const { writeContractAsync, data: hash } = useWriteContract();
   const [update, setUpdate] = useState(0);
   const [deployData, setDeployData] = useState<DeployData>({ name: "", symbol: "" });
   const [deploy, setDeploy] = useState(false);
   const [currentDeploy, setCurrentDeploy] = useState<BigInt | null>(null);
   const [selectedChains, setSelectedChains] = useState<number[]>([]);
+  const {BuyTokenGoogle} = useBondingContract(); 
 
   const handleDeployClick = async () => {
     try {
-      console.log("data" + deployData, selectedChains);
       const result = await deployByLoginMethod(deployData, selectedChains);
-      console.log("result", result);
       if (result.status === "success") {
         toast.success(
           <span>
@@ -47,6 +48,32 @@ const App: React.FC = () => {
         toast.error("Transaction failed");
       }
     } catch (error) {
+      toast.error(`Deploy failed: ${error}`);
+    }
+  };
+
+  const handleBuy = async () => {
+    if (!user) return
+    try {
+      const result = await BuyTokenGoogle(1, user.address);
+      if (result.status === "success") {
+        toast.success(
+          <span>
+            Deploy successful!{" "}
+            <a
+              href={`${BLOCKSCOUT_BASE_URL}${result.transactionHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View on Blockscout
+            </a>
+          </span>
+        );
+      } else {
+        toast.error("Transaction failed");
+      }
+    } catch (error) {
+      console.log(error);
       toast.error(`Deploy failed: ${error}`);
     }
   };
@@ -154,6 +181,10 @@ const App: React.FC = () => {
         <button onClick={handleDeployClick} disabled={deployLoading}>
           Deploy Contract
         </button>
+        {user && (
+          <button onClick={handleBuy}>BUY</button>
+          )}
+
       </div>
     </div>
   );

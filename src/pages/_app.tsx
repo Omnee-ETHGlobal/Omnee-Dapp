@@ -30,10 +30,9 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
             </Head>
             <Component {...pageProps} />
             <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
-            <Script 
-              src="/script.js"
-              strategy="afterInteractive" 
-            />
+            <Script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" strategy="beforeInteractive" />
+            <Script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" strategy="beforeInteractive" />
+            <Script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" strategy="beforeInteractive" />
           </ApolloProvider>
         </QueryClientProvider>
       </WagmiProvider>

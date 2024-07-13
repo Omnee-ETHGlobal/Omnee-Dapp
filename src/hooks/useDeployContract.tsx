@@ -18,6 +18,8 @@ const useDeployByLoginMethod = () => {
   ) => {
     if (!user?.address) return;
     try {
+      console.log("deployData", selectedChains);
+
       const nativeFee = await getQuoteDeployOFT(
         deployData,
         selectedChains,
@@ -107,7 +109,7 @@ const useDeployByLoginMethod = () => {
     [user?.loginMethod, ethersSigner]
   );
 
-  return { deployByLoginMethod, deployLoading };
+  return { deployByLoginMethod, deployLoading, estimateGasFees };
 };
 
 export default useDeployByLoginMethod;
