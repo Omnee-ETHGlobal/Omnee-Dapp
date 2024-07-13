@@ -1,7 +1,12 @@
+import { useGraphQLQuery } from '@/hooks/useGraphQlQuery';
 import Link from 'next/link';
-import React from 'react';
+import React, { use, useEffect } from 'react';
 
 const HomePage: React.FC = () => {
+    const {data} = useGraphQLQuery();
+    useEffect(() => {
+        console.log(data);
+    },[data])
     return (
         <div className="container">
             <h1 className="title text-center">Home Page</h1>
