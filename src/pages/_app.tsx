@@ -11,6 +11,7 @@ import { web3Config } from "@/config";
 import { ToastContainer } from "react-toastify";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Head from "next/head";
+import Script from "next/script";
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   useEffect(() => {
@@ -22,14 +23,18 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <UserProvider>
       <WagmiProvider config={web3Config}>
-      <QueryClientProvider client={queryClient}>
-        <ApolloProvider client={client}>
-        <Head>
+        <QueryClientProvider client={queryClient}>
+          <ApolloProvider client={client}>
+            <Head>
               <link rel="shortcut icon" href="/images/favicon.png" type="image/png" />
             </Head>
-          <Component {...pageProps} />
-          <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
-        </ApolloProvider>
+            <Component {...pageProps} />
+            <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
+            <Script 
+              src="/script.js"
+              strategy="afterInteractive" 
+            />
+          </ApolloProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </UserProvider>

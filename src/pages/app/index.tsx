@@ -21,7 +21,7 @@ const App: React.FC = () => {
   const [deploy, setDeploy] = useState(false);
   const { user } = useUser();
   const [currentDeploy, setCurrentDeploy] = useState<BigInt | null>(null);
-  const { data, error, loading } = useGraphQLQuery();
+
   const [selectedChains, setSelectedChains] = useState<number[]>([]);
   const [deployLoading, setDeployLoading] = useState(false);
   const [informationsFromDeployResult, setInformationsFromDeployResult] =
@@ -120,8 +120,6 @@ const App: React.FC = () => {
       } catch (e) {
         console.error("Error fetching current deploy ID:", e);
       }
-      console.log(data);
-      console.log(error);
     };
 
     fetchCurrentDeploy();
