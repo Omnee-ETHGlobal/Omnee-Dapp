@@ -2,7 +2,11 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import Web3 from "web3";
 import { User, UserContextType } from "@/types/userContext";
 import { web3auth } from "@/config/web3AuthConfig";
-import { arbSepoliaConfig, baseSepoliaConfig, scrollSepoliaConfig } from "@/config/chainConfig";
+import {
+  arbSepoliaConfig,
+  baseSepoliaConfig,
+  scrollSepoliaConfig,
+} from "@/config/chainConfig";
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -41,25 +45,24 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
           },
         },
       });
-    if (web3auth.connected) {
-      try {
-        setLoggedIn(true);
-        const loginMethod = await determineLoginMethod();
-        await updateUser(loginMethod);
-      } catch (chainError) {
-        console.error("Failed to add chain config:", chainError);
+      if (web3auth.connected) {
+        try {
+          setLoggedIn(true);
+          const loginMethod = await determineLoginMethod();
+          await updateUser(loginMethod);
+        } catch (chainError) {
+          console.error("Failed to add chain config:", chainError);
+        }
       }
+    } catch (error) {
+      console.error("Initialization failed:", error);
     }
-  } catch (error) {
-    console.error("Initialization failed:", error);
-  }
-};
+  };
 
-
-const determineLoginMethod = async () => {
+  const determineLoginMethod = async () => {
     const userInfo = await web3auth.getUserInfo();
     console.log(userInfo);
-  
+
     if (userInfo) {
       switch (userInfo.typeOfLogin) {
         case "google":
@@ -74,11 +77,9 @@ const determineLoginMethod = async () => {
           return "Unknown";
       }
     }
-  
+
     return "Unknown";
   };
-  
-  
 
   const updateUser = async (loginMethod: string) => {
     try {
@@ -139,15 +140,15 @@ const determineLoginMethod = async () => {
   const switchChain = async (id: string) => {
     try {
       switch (id) {
-        case '1':
+        case "1":
           await web3auth.addChain(baseSepoliaConfig);
           await web3auth.switchChain({ chainId: baseSepoliaConfig.chainId });
           break;
-        case '2':
+        case "2":
           await web3auth.addChain(scrollSepoliaConfig);
           await web3auth.switchChain({ chainId: scrollSepoliaConfig.chainId });
           break;
-        case '3':
+        case "3":
           await web3auth.addChain(arbSepoliaConfig);
           await web3auth.switchChain({ chainId: arbSepoliaConfig.chainId });
           break;
@@ -161,7 +162,6 @@ const determineLoginMethod = async () => {
       console.error("Failed to switch chain:", error);
     }
   };
-  
 
   return (
     <UserContext.Provider
