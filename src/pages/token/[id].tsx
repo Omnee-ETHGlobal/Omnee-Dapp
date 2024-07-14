@@ -32,7 +32,9 @@ const IdPage: React.FC = () => {
     update,
     (id as string)
   );
-
+useEffect(() => {
+  console.log(tokenDeploy);
+}, [tokenDeploy]);
   useEffect(() => {
     const btnBuy = document.getElementById("btn-buy");
     const btnSell = document.getElementById("btn-sell");

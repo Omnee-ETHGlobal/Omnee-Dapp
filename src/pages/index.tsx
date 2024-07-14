@@ -27,6 +27,7 @@ const Create: React.FC = () => {
   const [showFailedModal, setShowFailedModal] = useState(false);
   const [estimatedFee, setEstimatedFee] = useState<bigint | null>(null);
   const { deployByLoginMethod, estimateGasFees } = useDeployByLoginMethod();
+  const[transactionUrl, setTransactionUrl] = useState<string>("");
   const [deployData, setDeployData] = useState<DeployData>({
     name: "",
     symbol: "",
@@ -48,7 +49,7 @@ const Create: React.FC = () => {
     { id: 40231, name: "Arbitrum", logo: "./images/chains/arb.png" },
     { id: 40232, name: "Optimism", logo: "./images/chains/op.png" },
     { id: 40170, name: "Scroll", logo: "./images/chains/scro.png" },
-    { id: 48899, name: "Zircuit", logo: "./images/chains/zircuit.png" },
+    { id: 40275, name: "Zircuit", logo: "./images/chains/zircuit.png" },
   ];
 
   const getSelectedChainNames = (
@@ -85,18 +86,7 @@ const Create: React.FC = () => {
       if (result.status === "success") {
         setSuccessDeploy(true);
         console.log(result);
-        toast.success(
-          <span>
-            Deploy successful!{" "}
-            <a
-              href={`${BLOCKSCOUT_BASE_URL}${result.transactionHash}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on Blockscout
-            </a>
-          </span>
-        );
+        setTransactionUrl(`${BLOCKSCOUT_BASE_URL}${result.transactionHash}`);
       } else {
         setSuccessDeploy(false);
         setShowFailedModal(true);
@@ -516,9 +506,9 @@ const Create: React.FC = () => {
                       <div className="col-6 col-md-6">
                         <div
                           className={`answer-clickable align-items-center ${
-                            selectedChains.includes(48899) ? "active" : ""
+                            selectedChains.includes(40275) ? "active" : ""
                           }`}
-                          onClick={() => handleChainChange(48899)}
+                          onClick={() => handleChainChange(40275)}
                         >
                           <img
                             src="./images/chains/zircuit.png"
@@ -892,6 +882,9 @@ const Create: React.FC = () => {
                     <p className="question-text mb-5">
                       Your contract has been successfully deployed !
                     </p>
+                    <a href={transactionUrl} target="_blank" className="question-text mb-5">
+                      See on Blockscout explorer 
+                    </a>
                     <button
                       onClick={() => router.push("/app")}
                       className="primary-btn d-block"
