@@ -1,0 +1,1 @@
+export const BLOCKSCOUT_BASE_URL = "https://base-sepolia.blockscout.com/tx/";

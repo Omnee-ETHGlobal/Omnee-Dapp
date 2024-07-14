@@ -1,0 +1,737 @@
+body {
+  font-family: "Manrope", sans-serif !important;
+  background-color: black;
+  background-image: url('/images/bgplaceholder.png');
+  background-position: center;
+  background-size: cover;
+  
+  letter-spacing: -5% !important;
+}
+
+/*colors*/
+
+
+.white{
+  color: #fff;
+}
+/*     Titles & text     */
+
+
+.hero-title {
+  font-weight: 500;
+  font-size: 58px;
+  letter-spacing: -4%;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent;
+}
+
+
+.create-title {
+  font-weight: 500;
+  font-size: 58px;
+  letter-spacing: -4%;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-title {
+  font-weight: 500;
+  font-size: 42px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitle {
+  font-size: 16px;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent;
+  font-weight: 200;
+}
+
+.section-hero {
+  padding-top: 150px;
+
+}
+
+.section-hero-center {
+  padding-top: 150px;
+
+}
+
+@media only screen and (max-width: 480px) {
+.create-title{
+      font-size: 42px;
+  }
+
+}
+
+/* BUTTON */
+
+.primary-btn {
+  padding: 15px 30px;
+
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background: #0F54FF;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  border: 1px solid 0F54FF;
+  transition: 0.4s;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  /* Initial shadow */
+}
+
+.primary-btn:hover {
+  box-shadow: 0 4px 100px rgba(111, 33, 253, 1);
+  /* Glow effect */
+  color: white;
+  transform: translateY(-5px);
+  /* Lift the button slightly */
+}
+
+
+
+/*containers*/
+
+.container-o {
+  width: 80% !important;
+  margin: 0 auto !important;
+}
+
+
+.container-nav {
+  width: 80%;
+  margin: 0 auto;
+
+}
+
+
+@media only screen and (max-width: 480px) {
+  .container-o {
+      width: 90% !important;
+      margin: 0 auto;
+  }
+
+
+  .container-nav {
+      width: 96%;
+
+  }
+
+}
+
+/*button*/
+
+.simple-link {
+  font-size: 14px;
+  font-weight: 300;
+  text-decoration: none;
+  color: white;
+  transition: 0.5s;
+}
+
+.simple-link:hover {
+  color: #007BFF;
+  transition: 0.5s;
+}
+
+
+
+
+/*nav*/
+
+.navbarz-mobile {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+  transition: 0.8s;
+}
+
+
+.navbarz {
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border-radius: 10px;
+  transition: 0.8s;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+
+/* Custom navbar styling */
+.navbar {
+  background-color: #fff;
+  /* White background */
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
+  /* Subtle shadow for depth */
+}
+
+.navbar-brand {
+  font-weight: 600;
+  color: #000;
+  /* Black for the brand */
+}
+
+.nav-link {
+  color: #555;
+  /* Dark grey for links */
+  margin-right: 15px;
+  /* Spacing between nav items */
+  font-size: 1rem;
+  /* Font size for links */
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: #000;
+  /* Black color on hover/focus for better interaction feedback */
+}
+
+
+
+.container-nav.fixed-top {
+  transition: top 0.3s;
+  /* Douce transition pour la montée et la descente */
+  z-index: 1030;
+  /* Haute valeur pour rester au-dessus des autres éléments */
+}
+
+.navbar-hidden {
+  top: -120px;
+  /* Adaptez cette valeur pour assurer que le conteneur est complètement caché */
+}
+
+
+.container-nav {
+  transition: background-color 0.3s ease;
+}
+
+.container-nav a,
+.container-nav svg {
+  transition: color 0.3s ease;
+}
+
+
+/*pills*/
+
+.pill-step {
+  background: rgb(44, 33, 253, 0.3);
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 300;
+  letter-spacing: -0.5;
+  color: #0F54FF;
+  display: inline-block;
+
+}
+
+
+
+.token-card {
+  background-color: #222;
+  color: white;
+  border-radius: 15px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.token-image-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.token-image {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background-color: gray;
+}
+
+.eth-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid #222;
+}
+
+.chain-icons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.chain-icons img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.token-info h5 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.token-info p {
+  margin: 0;
+  font-size: 1rem;
+  color: gray;
+}
+
+.token-price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: right;
+}
+
+
+/*card-token-list*/
+
+
+.token-picture {
+  width: 60px;
+  height: 60px;
+  border-radius: 1000px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.eth-over {
+  width: 40px;
+  height: 40px;
+  border-radius: 1000px;
+  background-image: url('/images/eth.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.chain-logo {
+  width: 35px;
+  height: 35px;
+  border-radius: 1000px;
+  margin-left: -20px;
+  border: 1px solid black;
+}
+
+.card-token {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-token:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-token-name {
+
+  font-size: 30px;
+  color: white;
+  font-weight: 600;
+  letter-spacing: -4% !important;
+}
+
+.card-token-pair {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 100;
+  font-family: "Manrope", sans-serif !important;
+
+}
+
+.card-token-price {
+  font-size: 24px;
+  color: white;
+  font-weight: 400;
+}
+
+
+.timeline-create {}
+
+.timeline-create-pill {
+  font-size: 12px;
+  color: #0F54FF;
+}
+
+.timeline-create-title {
+  font-size: 20px;
+  color: #fff;
+}
+
+.timeline-create-text {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+
+.timeline {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 20px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  /* Adjusted to align with the circles */
+  width: 10px;
+  height: 100%;
+  background: #0F54FF;
+  border-radius: 100px;
+}
+
+.timeline-step {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 40px;
+
+
+}
+
+.timeline-step h5 {
+  color: #0F54FF;
+}
+
+.timeline-step .step-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.timeline-step .step-description {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-back {
+  padding: 15px 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background: transparent;
+  text-decoration: none;
+  border: none;
+  color: #0F54FF;
+  font-weight: 500;
+
+  transition: 0.4s;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  /* Initial shadow */
+}
+
+.btn-back:hover {
+  color: white;
+  transition: 0.4s;
+
+  transform: translateY(-5px);
+  /* Lift the button slightly */
+}
+
+.styled-input {
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px 20px;
+  font-size: 18px;
+  width: 100%;
+  color: #fff;
+  font-weight: normal; 
+  transition: border-color 0.3s ease;
+}
+
+.styled-input:focus {
+  outline: none;
+  border-color: #007BFF;
+}
+
+.styled-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.input-container {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.input-container label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.question-title {
+  font-size: 20px;
+
+  color: white;
+}
+
+.question-text {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+
+
+}
+
+
+.question-error {
+  color: rgb(255, 69, 69);
+  font-size: 16px;
+}
+
+
+.answer-noclick {
+  padding: 30px;
+  font-size: 20 px;
+  font-weight: 500;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+
+}
+
+.answer-noclick-img {
+  width: 10px !important;
+  height: auto;
+}
+
+
+
+.answer-clickable {
+  display: flex;
+  align-items: center;
+  padding: 30px;
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.0);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: 0.5px solid white;
+}
+
+.answer-clickable:hover {
+  background-color: rgba(0, 84, 255, 0.2);
+  border: 0.5px rgba(0, 84, 255, 0.4);
+  ;
+}
+
+.answer-clickable.active {
+  background-color: rgba(0, 84, 255, 0.4);
+}
+
+.answer-clickable-img {
+  width: 30px !important;
+  height: auto;
+  margin-right: 10px;
+}
+
+.review-title{
+  font-size: 16px;
+  color:rgba(255, 255, 255, 0.5);
+  font-weight: 300;
+}
+.review-value{
+  font-size: 18px;
+  color: white;
+  font-weight: 500;
+}
+
+
+@media only screen and (max-width: 480px) {
+.create-title{
+      font-size: 42px;
+  }
+  .answer-clickable{
+      padding: 20px;
+  }
+
+}
+
+
+.modal-content {
+  background-color: #111111 !important;
+  color: #fff !important;
+}
+.modal-header, .modal-footer {
+  border: none;
+}
+.spinner-border {
+  color: #fff;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #666;
+}
+.tab-content {
+  background-color: #444;
+  border-radius: 0 0 10px 10px;
+  padding: 20px;
+}
+.form-control {
+  background-color: #222;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.form-control:focus {
+  background-color: #333;
+  color: #fff;
+}
+.btn-primary {
+  background-color: #8200ff;
+  border: none;
+  border-radius: 10px;
+}
+.btn-primary:hover {
+  background-color: #b94fff;
+}
+
+
+
+
+
+.primary-btn-xsmall:hover {
+padding: 10px 15px;
+justify-content: center;
+align-items: center;
+background: #007BFF;
+text-decoration: none;
+color: #fff;
+font-weight: 500;
+}
+
+
+.primary-btn-white-xsmall {
+font-size: 13px;
+padding: 10px 15px;
+justify-content: center;
+align-items: center;
+border-radius: 5px;
+background: rgba(255, 255, 255, 0.15);
+text-decoration: none;
+color: white;
+font-weight: 500;
+border: none;
+}
+
+a {
+  cursor: pointer !important;
+}
+
+.primary-btn-white-xsmall:hover {
+padding: 10px 15px;
+justify-content: center;
+align-items: center;
+border-radius: 5px;
+background: rgba(255, 255, 255, 0.3);
+text-decoration: none;
+color: #fff;
+font-weight: 500;
+}
+
+
+
+.btn-switch-active{
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-bottom:3px solid #007BFF;
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+  
+
+  width: 100%; text-decoration: none;  padding: 20px; 
+}
+.btn-switch{
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+  font-size: 20px;
+  border: transparent;
+  
+  width: 100%; text-decoration: none;   padding: 20px; 
+}
+
+
+.card-sell-buy-sell{
+  border-radius: 30px;
+  ;
+}
+
+
+
+.input-buy-sell{
+  font-size: 40px;
+  color: white;
+  font-weight: 500;
+}
+
+.input-buy-sell::placeholder{
+  font-size: 40px;
+  
+  font-weight: 500;
+}
+
+.input-buy-sell:focus{
+border: none;
+text-decoration: none;
+outline: none !important;
+
+}
+
+
+.ticker-buy-sell{
+  font-size: 25px;
+  color: white;
+}
+
+
+.link-buy-sell{
+  text-decoration: none; font-weight: 300; font-size: 14px; background-color: rgba(255, 255, 255, 0.15);color: white; padding: 10px 15px;
+  border-radius: 10px;
+}
+.link-buy-sell:hover{
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+
+
+
+
+
+
+#extra-links {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#extra-links.show {
+  opacity: 1;
+}
