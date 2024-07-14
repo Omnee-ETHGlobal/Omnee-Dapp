@@ -47,7 +47,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
               weibo: { name: "weibo", showOnModal: false },
               wechat: { name: "wechat", showOnModal: false },
               farcaster: { name: "farcaster", showOnModal: false },
-              google: { name: "google", showOnModal: true },
+              google: { name: "google", showOnModal: false },
               metamask: { name: "metamask", showOnModal: true },
             },
           },
