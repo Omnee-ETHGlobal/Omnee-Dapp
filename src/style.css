@@ -1,18 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 body {
   font-family: "Manrope", sans-serif !important;
   background-color: black;
   background-image: url('/images/bgplaceholder.png');
   background-position: center;
   background-size: cover;
+  
   letter-spacing: -5% !important;
 }
 
 /*colors*/
 
-.cursor-pointer {
-  cursor: pointer !important;
-}
+
 .white{
   color: #fff;
 }
@@ -75,6 +73,7 @@ body {
 
 .primary-btn {
   padding: 15px 30px;
+
   justify-content: center;
   align-items: center;
   border-radius: 10px;
@@ -96,29 +95,6 @@ body {
   /* Lift the button slightly */
 }
 
-.btn-back {
-  padding: 15px 30px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  background: transparent;
-  text-decoration: none;
-  border: none;
-  color: #0F54FF;
-  font-weight: 500;
-
-  transition: 0.4s;
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-  /* Initial shadow */
-}
-
-.btn-back:hover {
-  color: white;
-  transition: 0.4s;
-
-  transform: translateY(-5px);
-  /* Lift the button slightly */
-}
 
 
 /*containers*/
@@ -449,18 +425,41 @@ body {
   color: rgba(255, 255, 255, 0.7);
 }
 
+.btn-back {
+  padding: 15px 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background: transparent;
+  text-decoration: none;
+  border: none;
+  color: #0F54FF;
+  font-weight: 500;
+
+  transition: 0.4s;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  /* Initial shadow */
+}
+
+.btn-back:hover {
+  color: white;
+  transition: 0.4s;
+
+  transform: translateY(-5px);
+  /* Lift the button slightly */
+}
+
 .styled-input {
   background: transparent;
   border: 1px solid #ccc;
   border-radius: 10px;
-  padding: 20px;
+  padding: 20px 20px;
   font-size: 18px;
   width: 100%;
   color: #fff;
   font-weight: normal; 
   transition: border-color 0.3s ease;
 }
-
 
 .styled-input:focus {
   outline: none;
@@ -583,4 +582,153 @@ body {
 }
 .spinner-border {
   color: #fff;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #666;
+}
+.tab-content {
+  background-color: #444;
+  border-radius: 0 0 10px 10px;
+  padding: 20px;
+}
+.form-control {
+  background-color: #222;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.form-control:focus {
+  background-color: #333;
+  color: #fff;
+}
+.btn-primary {
+  background-color: #8200ff;
+  border: none;
+  border-radius: 10px;
+}
+.btn-primary:hover {
+  background-color: #b94fff;
+}
+
+
+
+
+
+.primary-btn-xsmall:hover {
+padding: 10px 15px;
+justify-content: center;
+align-items: center;
+background: #007BFF;
+text-decoration: none;
+color: #fff;
+font-weight: 500;
+}
+
+
+.primary-btn-white-xsmall {
+font-size: 13px;
+padding: 10px 15px;
+justify-content: center;
+align-items: center;
+border-radius: 5px;
+background: rgba(255, 255, 255, 0.15);
+text-decoration: none;
+color: white;
+font-weight: 500;
+
+
+}
+
+.primary-btn-white-xsmall:hover {
+padding: 10px 15px;
+justify-content: center;
+align-items: center;
+border-radius: 5px;
+background: rgba(255, 255, 255, 0.3);
+text-decoration: none;
+color: #fff;
+font-weight: 500;
+}
+
+
+
+.btn-switch-active{
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-bottom:3px solid #007BFF;
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+  
+
+  width: 100%; text-decoration: none;  padding: 20px; 
+}
+.btn-switch{
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
+  font-size: 20px;
+  border: transparent;
+  
+  width: 100%; text-decoration: none;   padding: 20px; 
+}
+
+
+.card-sell-buy-sell{
+  border-radius: 30px;
+  ;
+}
+
+
+
+.input-buy-sell{
+  font-size: 40px;
+  color: white;
+  font-weight: 500;
+}
+
+.input-buy-sell::placeholder{
+  font-size: 40px;
+  
+  font-weight: 500;
+}
+
+.input-buy-sell:focus{
+border: none;
+text-decoration: none;
+outline: none !important;
+
+}
+
+
+.ticker-buy-sell{
+  font-size: 25px;
+  color: white;
+}
+
+
+.link-buy-sell{
+  text-decoration: none; font-weight: 300; font-size: 14px; background-color: rgba(255, 255, 255, 0.15);color: white; padding: 10px 15px;
+  border-radius: 10px;
+}
+.link-buy-sell:hover{
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+
+
+
+
+
+
+#extra-links {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#extra-links.show {
+  opacity: 1;
 }

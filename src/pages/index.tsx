@@ -32,6 +32,7 @@ const Home: React.FC = () => {
                 <option value="2">Scroll Sepolia</option>
                 <option value="3">Arbitrum Sepolia</option>
                 <option value="4">Optimism Sepolia</option>
+                <option value="5">Zircuit</option>
               </select>
             </>
           )}

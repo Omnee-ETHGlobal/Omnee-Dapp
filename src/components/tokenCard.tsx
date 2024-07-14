@@ -13,6 +13,7 @@ const CHAIN_LOGOS: ChainLogos = {
   "40170": "/images/chains/scro.png",
   "40231": "/images/chains/arb.png",
   "40232": "/images/chains/op.png",
+  "48899": "/images/chains/zircuit.png",
 };
 
 const defaultLogoUrl = "/images/chains/base.png";

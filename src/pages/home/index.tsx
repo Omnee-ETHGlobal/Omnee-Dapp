@@ -86,7 +86,6 @@ const App: React.FC = () => {
   const handleChainChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
     const chainId = parseInt(value);
-
     setSelectedChains((prev) =>
       checked ? [...prev, chainId] : prev.filter((id) => id !== chainId)
     );

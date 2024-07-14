@@ -12,8 +12,8 @@ const LoginButton: React.FC = () => {
   };
 
   return (
-    <button onClick={loggedIn ? logout : login} className="card btn btn-primary">
-      {loggedIn && user?.address ? formatAddress(user.address) : 'Login'}
+    <button onClick={loggedIn ? logout : login} className="primary-btn-white-xsmall">
+      {loggedIn && user?.address ? formatAddress(user.address) : 'Connect your wallet'}
     </button>
   );
 };

@@ -6,40 +6,37 @@ export const useUniversalFactory = (
   account: `0x${string}` | null,
   refresh: any,
   update: any,
+  tokenId: number
 ) => {
   const [data, setData] = useState({
-    currentDeploy: BigInt(0),
+    tokenDeploy: BigInt(0),
   });
 
-  //useEffect(() => {
+useEffect(() => {
     const fetch = async () => {
       const res = await multicall(web3Config, {
         contracts: [
           {
             ...UniversalFactoryContract,
-            functionName: "currentDeployId",
-            args: [],
+            functionName: "tokenByDeployId",
+            args: [tokenId],
           },
         ],
       });
-
-      console.log(res);
       setData({
-        currentDeploy: res[0].result as bigint,
+        tokenDeploy: res[0].result as any,
       });
+      console.log(res);
     };
-
     if (account) fetch();
-  //}, [account, refresh, update]);
-  
-
+}, [account, refresh, update]);
   return data;
 };
 
 export const getQuoteDeployOFT = async (
     deployData: { name: string; symbol: string },
     eids: number[],
-    options: string
+    options: string,
   ) => {
     const response = await multicall(web3Config, {
       contracts: [
@@ -47,7 +44,7 @@ export const getQuoteDeployOFT = async (
           ...UniversalFactoryContract,
           functionName: "quoteDeployOFT",
           args: [deployData.name, deployData.symbol, eids, options],
-        },
+        }
       ],
     });
   

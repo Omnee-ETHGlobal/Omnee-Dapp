@@ -1,3 +1,4 @@
+import Navbar from "@/components/navbar/navbar";
 import { BLOCKSCOUT_BASE_URL } from "@/config/api/blockscoutApi";
 import useDeployByLoginMethod from "@/hooks/useDeployContract";
 import { Chain } from "@/types/chain";
@@ -47,6 +48,7 @@ const Create: React.FC = () => {
     { id: 40231, name: "Arbitrum", logo: "./images/chains/arb.png" },
     { id: 40232, name: "Optimism", logo: "./images/chains/op.png" },
     { id: 40170, name: "Scroll", logo: "./images/chains/scro.png" },
+    { id: 48899, name: "Zircuit", logo: "./images/chains/zircuit.png" },
   ];
 
   const getSelectedChainNames = (
@@ -110,78 +112,7 @@ const Create: React.FC = () => {
   };
   return (
     <>
-      {/*NAV DESKTOP*/}
-      <div
-        className="container-nav fixed-top d-none d-lg-block"
-        style={{ top: 20 }}
-      >
-        <div className="navbarz" style={{ transition: "top 0.3s" }}>
-          <div className="row align-items-center">
-            <div className="col-3">
-              <a href="index.html">
-                <img src="./images/logo.svg" width="110px" alt="" />
-              </a>
-            </div>
-            <div className="col-6 text-center">
-              <a className="simple-link regular-text m-2" href="payin.html">
-                Pay-in
-              </a>
-              <a className="simple-link regular-text m-2" href="payout.html">
-                Pay-out
-              </a>
-              <a
-                className="simple-link regular-text m-2"
-                href="smartsettlement.html"
-              >
-                Smart Settlement
-              </a>
-              <a
-                className="simple-link regular-text m-2"
-                href="telegramandton.html"
-              >
-                Telegram &amp; TON
-              </a>
-              <a className="simple-link regular-text m-2" href="#">
-                Documentation
-              </a>
-            </div>
-            <div className="col-3 text-end">
-              <a href="#" className="primary-btn-white-xsmall">
-                Log in
-              </a>
-              <a href="#" className="primary-btn-xsmall">
-                Sign Up
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/*NAV MOBILE*/}
-      <div
-        className="container-nav navscroll fixed-top d-block d-lg-none"
-        style={{ top: 10 }}
-      >
-        <div
-          className="navbarz-mobile"
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.3)",
-            backdropFilter: "blur(20px)",
-            padding: "15px 10px",
-            borderRadius: 10,
-          }}
-        >
-          <div className="row">
-            <div className="col-4">
-              <img src="./images/logo.svg" alt="" width="120px" />
-            </div>
-            <div className="col-8 text-end">
-              <a className="primary-btn-xsmall" href="">
-                Sign up
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+    <Navbar />
       <section className="section-hero d-flex align-items-center min-vh-100">
         <div className="container-o text-center">
           {/*get started*/}
@@ -581,6 +512,21 @@ const Create: React.FC = () => {
                           Scroll
                         </div>
                       </div>
+                      <div className="col-6 col-md-6">
+                        <div
+                          className={`answer-clickable align-items-center ${
+                            selectedChains.includes(48899) ? "active" : ""
+                          }`}
+                          onClick={() => handleChainChange(48899)}
+                        >
+                          <img
+                            src="./images/chains/zircuit.png"
+                            className="answer-clickable-img img-fluid me-2"
+                            alt=""
+                          />{" "}
+                          Zircuit
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -881,7 +827,7 @@ const Create: React.FC = () => {
                     onClick={handleDeployClick}
                     data-toggle="modal"
                     data-target="#exampleModalCenter"
-                    className="primary-btn d-block text-center mb-2"
+                    className="primary-btn d-block text-center mb-2 cursor-pointer"
                   >
                     Confirm
                   </a>

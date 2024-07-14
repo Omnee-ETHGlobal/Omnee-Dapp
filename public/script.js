@@ -38,3 +38,30 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 10);
     });
 });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const btnBuy = document.getElementById('btn-buy');
+    const btnSell = document.getElementById('btn-sell');
+    const buyContent = document.querySelector('.buy-content');
+    const sellContent = document.querySelector('.sell-content');
+
+    btnBuy.addEventListener('click', function () {
+        btnBuy.classList.add('btn-switch-active');
+        btnBuy.classList.remove('btn-switch');
+        btnSell.classList.remove('btn-switch-active');
+        btnSell.classList.add('btn-switch');
+        buyContent.classList.remove('d-none');
+        sellContent.classList.add('d-none');
+    });
+
+    btnSell.addEventListener('click', function () {
+        btnSell.classList.add('btn-switch-active');
+        btnSell.classList.remove('btn-switch');
+        btnBuy.classList.remove('btn-switch-active');
+        btnBuy.classList.add('btn-switch');
+        sellContent.classList.remove('d-none');
+        buyContent.classList.add('d-none');
+    });
+});
+
