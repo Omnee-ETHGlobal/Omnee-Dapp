@@ -637,8 +637,11 @@ background: rgba(255, 255, 255, 0.15);
 text-decoration: none;
 color: white;
 font-weight: 500;
+border: none;
+}
 
-
+a {
+  cursor: pointer !important;
 }
 
 .primary-btn-white-xsmall:hover {

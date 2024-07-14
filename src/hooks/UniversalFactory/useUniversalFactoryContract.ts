@@ -6,7 +6,7 @@ export const useUniversalFactory = (
   account: `0x${string}` | null,
   refresh: any,
   update: any,
-  tokenId: number
+  tokenId: string
 ) => {
   const [data, setData] = useState({
     tokenDeploy: BigInt(0),
@@ -18,7 +18,7 @@ useEffect(() => {
         contracts: [
           {
             ...UniversalFactoryContract,
-            functionName: "tokenByDeployId",
+            functionName: "tokenByAddress",
             args: [tokenId],
           },
         ],

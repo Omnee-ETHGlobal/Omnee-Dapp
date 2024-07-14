@@ -31,7 +31,7 @@ const TokenCard: React.FC<TokenProps> = ({ token }) => {
         setTokenPrice(formattedPrice);
       } catch (error) {
         console.error('Error fetching token price:', error);
-        setTokenPrice('Unavailable');
+        setTokenPrice('-');
       }
     };
 

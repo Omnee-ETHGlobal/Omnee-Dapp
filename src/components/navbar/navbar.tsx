@@ -15,12 +15,12 @@ const Navbar: React.FC = () => {
           <div className="navbarz" style={{ transition: "top 0.3s" }}>
             <div className="row align-items-center">
               <div className="col-3">
-                <a href="index.html">
+                <a href="/">
                   <img src="./images/logo.svg" width="110px" alt="" />
                 </a>
               </div>
               <div className="col-6 text-center">
-                <Link className="simple-link regular-text m-2" href="/create">
+                <Link className="simple-link regular-text m-2" href="/">
                   Create token
                 </Link>
                 <Link className="simple-link regular-text m-2" href="/app">
@@ -77,17 +77,17 @@ const Navbar: React.FC = () => {
               style={{ padding: "20px 20px 0 20px" }}
             >
               <div className="col-12 text-center">
-                <a href="#" className="simple-link d-block mb-3">
-                  Create token
-                </a>
+              <Link href="/" className="simple-link d-block mb-3">
+               Create Token
+                </Link>
               </div>
               <div className="col-12 text-center">
-                <a href="#" className="simple-link d-block mb-3">
+                <Link href="/app" className="simple-link d-block mb-3">
                   All tokens
-                </a>
+                </Link>
               </div>
               <div className="col-12 text-center">
-                <a href="#" className="simple-link d-block mb-3">
+                <a target="_blank" href="https://github.com/OmneeFun-ETH-GLOBAL/OmneeFun-Dapp" className="simple-link d-block mb-3">
                   Github
                 </a>
               </div>

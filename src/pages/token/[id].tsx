@@ -20,15 +20,17 @@ const IdPage: React.FC = () => {
   const { BuyTokens, SellTokens } = useBondingContract();
   const [amountBuy, setAmountBuy] = React.useState<number>(0);
   const [amountSell, setAmountSell] = React.useState<number>(0);
+  const [sellLoading, setSellLoading] = React.useState<boolean>(false);
   const [update, setUpdate] = React.useState<number>(0);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const { user } = useUser();
   const { id } = router.query;
   const { approveMetamask } = useToken(id as `0x${string}`);
   const { tokenDeploy } = useUniversalFactory(
-    user?.address as `0x${string}` ,
+    user?.address as `0x${string}`,
     false,
     update,
-    parseInt(id as string)
+    (id as string)
   );
 
   useEffect(() => {
@@ -85,6 +87,7 @@ const IdPage: React.FC = () => {
   const handleBuy = async () => {
     if (!user) return;
     if (amountBuy <= 0) return toast.error("Amount must be greater than 0");
+    setLoading(true);
     try {
       const result = await BuyTokens(amountBuy, id as string);
       if (result.status === "success") {
@@ -109,26 +112,55 @@ const IdPage: React.FC = () => {
     } catch (error) {
       console.log(error);
       toast.error(`Transaction failed: ${error}`);
+    } finally {
+      setLoading(false); // End loading
     }
   };
 
   const handleSell = async () => {
     if (!tokenPrice || !amountSell) return;
-    const pricePerTokenInWei = ethers.utils.parseUnits(tokenPrice, "ether");
-    const sellAmountWei = pricePerTokenInWei.mul(
-      ethers.BigNumber.from(amountSell)
-    );
-    const result = await approveMetamask(
-      "0xb96ce1e3306207a98e973b810df241becabc6842",
-      sellAmountWei
-    );
-    if (result) {
-      const tx = await SellTokens(amountSell, id as string);
+    setSellLoading(true); // Start loading for sell
+    try {
+      const pricePerTokenInWei = ethers.utils.parseUnits(tokenPrice, "ether");
+      const sellAmountWei = pricePerTokenInWei.mul(
+        ethers.BigNumber.from(amountSell)
+      );
+      const approveResult = await approveMetamask(
+        id as `0x${string}`,
+        sellAmountWei
+      );
+      if (approveResult) {
+        const sellResult = await SellTokens(amountSell, id as string);
+        if (sellResult.status === "success") {
+          setAmountSell(0);
+          setUpdate(update + 1);
+          toast.success(
+            <span>
+              Sell successful!{" "}
+              <a
+                href={`${BLOCKSCOUT_BASE_URL}${sellResult.transactionHash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View on Blockscout
+              </a>
+            </span>
+          );
+        } else {
+          console.log(sellResult);
+          toast.error("Transaction failed");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(`Transaction failed: ${error}`);
+    } finally {
+      setSellLoading(false); // End loading for sell
     }
   };
   return (
     <>
-        <Navbar />
+      <Navbar />
       <section className="section-hero d-flex align-items-center min-vh-100">
         <div className="container-o text-center">
           <div className="row d-flex align-items center justify-content-center gx-0">
@@ -242,12 +274,20 @@ const IdPage: React.FC = () => {
                       </h5>
                     </div>
                   </div>
-                  <button
-                    onClick={handleBuy}
-                    className="primary-btn d-block w-100"
-                  >
-                    Buy
-                  </button>
+                  {loading ? (
+                    <button className="primary-btn d-block w-100">
+                      <div className="spinner-border" role="status">
+                        <span className="sr-only"></span>
+                      </div>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleBuy}
+                      className="primary-btn d-block w-100"
+                    >
+                      Buy
+                    </button>
+                  )}
                 </div>
                 {/*content buy*/}
                 {/*content sell*/}
@@ -311,12 +351,20 @@ const IdPage: React.FC = () => {
                       </h5>
                     </div>
                   </div>
-                  <button
-                    onClick={handleSell}
-                    className="primary-btn d-block w-100"
-                  >
-                    Sell
-                  </button>
+                  {sellLoading ? (
+                    <button className="primary-btn d-block w-100">
+                      <div className="spinner-border" role="status">
+                        <span className="sr-only"></span>
+                      </div>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleSell}
+                      className="primary-btn d-block w-100"
+                    >
+                      Sell
+                    </button>
+                  )}
                 </div>
                 {/*content buy*/}
               </div>

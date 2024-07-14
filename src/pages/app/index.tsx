@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import EthImage from "../../../public/images/eth.png";
 import { getCurrentDeploy } from "@/hooks/UniversalFactory/useUniversalFactoryContract";
 import { useGraphQLQuery } from "@/hooks/GraphQL/useGraphQlQuery";
 import TokenCard from "../../components/tokenCard";
