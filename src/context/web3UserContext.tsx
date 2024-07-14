@@ -110,6 +110,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("Failed to update user:", error);
     }
   };
+  useEffect(() => {
+    if (user) {
+      console.log(user.address);
+    }
+  },[user]);
 
   useEffect(() => {
     if (user) {
