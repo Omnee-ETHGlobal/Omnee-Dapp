@@ -51,7 +51,6 @@ const useDeployByLoginMethod = () => {
         "0x000301001101000000000000000000000000000f4240",
         { value: estimatedFee }
       );
-
       const result = await tx.wait();
       return result;
     } else {
@@ -98,7 +97,7 @@ const useDeployByLoginMethod = () => {
           user?.loginMethod === "Google"
             ? await deployToUniversalFactoryEthers(deployData, selectedChains)
             : await deployToUniversalFactory(deployData, selectedChains);
-
+        console.log(result);
         return result;
       } catch (error) {
         return error;

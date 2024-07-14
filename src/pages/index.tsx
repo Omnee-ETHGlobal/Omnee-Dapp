@@ -83,7 +83,7 @@ const Create: React.FC = () => {
     setDeployLoading(true);
     try {
       const result = await deployByLoginMethod(deployData, selectedChains);
-      if (result.status === "success") {
+      if (result) {
         setSuccessDeploy(true);
         console.log(result);
         setTransactionUrl(`${BLOCKSCOUT_BASE_URL}${result.transactionHash}`);
