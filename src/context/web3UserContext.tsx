@@ -100,6 +100,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         "ether"
       );
       console.log(balance);
+      console.log(address);
       setUser({
         address,
         balance,
@@ -109,6 +110,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("Failed to update user:", error);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      console.log(user.address);
+    }
+  },[user]);
 
   const login = async () => {
     try {
