@@ -26,7 +26,7 @@ const App: React.FC = () => {
   const [deploy, setDeploy] = useState(false);
   const [currentDeploy, setCurrentDeploy] = useState<BigInt | null>(null);
   const [selectedChains, setSelectedChains] = useState<number[]>([]);
-  const {BuyTokenGoogle} = useBondingContract(); 
+  const {BuyTokens} = useBondingContract(); 
 
   const handleDeployClick = async () => {
     try {
@@ -55,11 +55,11 @@ const App: React.FC = () => {
   const handleBuy = async () => {
     if (!user) return
     try {
-      const result = await BuyTokenGoogle(1, user.address);
+      const result = await BuyTokens(1, user.address);
       if (result.status === "success") {
         toast.success(
           <span>
-            Deploy successful!{" "}
+            Buy successful!{" "}
             <a
               href={`${BLOCKSCOUT_BASE_URL}${result.transactionHash}`}
               target="_blank"
@@ -181,7 +181,7 @@ const App: React.FC = () => {
         <button onClick={handleDeployClick} disabled={deployLoading}>
           Deploy Contract
         </button>
-        {user && (
+        {user?.address && (
           <button onClick={handleBuy}>BUY</button>
           )}
 

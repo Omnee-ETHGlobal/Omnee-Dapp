@@ -23,11 +23,12 @@ export const BaseConfig = createConfig({
 });
 
 export const UniversalFactoryContract = {
-    address: "0x43487B3C75B511a19fb591bBB5dA1aAd454DC071",
+    address: "0x435af5A68b47003f46078a105e2eFA2566e2680C",
     abi: UniversalFactoryABI as any,
   } as const;
 
 export const BondingCurveContract = {
-    address: "0xFC308527980c5800549053831C959F28d1bc4447",
+    address: "0x38f7f6eac9191BB1434587e7aE28b03ba17fe670",
     abi: BondingCurvABI as any,
   } as const;
+

@@ -1,11 +1,13 @@
 interface TokenData {
-    id: string;
-    transactionHash: string;
-    param0: string;
-    param1: string;  
-    param2: string;  
-    param3: string[];  
-    param4: string;  
+  id: string;
+  tokenAddress: string;
+  name: string;
+  symbol: string;
+  eids: BigInt[];
+  deployId: BigInt;
+  blockNumber: BigInt;
+  blockTimestamp: BigInt;
+  transactionHash: string;
   }
   
   interface TokenProps {

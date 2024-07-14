@@ -1,5 +1,6 @@
-
 import { getTokenPrice } from "@/hooks/BondingCurvFactory/useBondingCurvContracts";
+import { formatTokenPrice } from "@/utils/formatPrice";
+import { ethers } from "ethers";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -14,55 +15,52 @@ const CHAIN_LOGOS: ChainLogos = {
   "40232": "/images/chains/op.png",
 };
 
-const defaultLogoUrl = '/images/chains/base.png';
+const defaultLogoUrl = "/images/chains/base.png";
 
 const TokenCard: React.FC<TokenProps> = ({ token }) => {
-  const [tokenPrice, setTokenPrice] =useState<BigInt | null>(null);
+  const [tokenPrice, setTokenPrice] = useState<string | null>(null);
   const [getPrice, setGetPrice] = useState(false);
   const [priceLoading, setPriceLoading] = useState(false);
   useEffect(() => {
-    const fetchCurrentDeploy = async () => {
+    const fetchPrice = async () => {
       try {
-        setGetPrice(true);
-        console.log(token.param0);
-        const price = await getTokenPrice(token.param0);
-        setTokenPrice(price);
-      } catch (e) {
-        console.error("Error fetching current deploy ID:", e);
-      } finally {
-        setPriceLoading(false);
+        const priceInWei = await getTokenPrice(token.tokenAddress);
+        const priceInEth = ethers.utils.formatEther(priceInWei);
+        const formattedPrice = formatTokenPrice(priceInEth);
+        setTokenPrice(formattedPrice);
+      } catch (error) {
+        console.error('Error fetching token price:', error);
+        setTokenPrice('Unavailable');
       }
     };
-    fetchCurrentDeploy();
-  }, []);
+
+    fetchPrice();
+  }, [token.tokenAddress]);
   const renderChainLogos = (chainIds: string[]) => {
-    const defaultLogoUrl = "/images/chains/base.png";  
-
+    const defaultLogoUrl = "/images/chains/base.png";
     return chainIds.map((chainId) => {
-        const specificLogoUrl = CHAIN_LOGOS[chainId];
-
-        return (
-            <React.Fragment key={chainId}>
-                <img
-                    className="chain-logo"
-                    src={defaultLogoUrl}
-                    alt="Default logo"
-                />
-                {specificLogoUrl && (
-                    <img
-                        className="chain-logo"
-                        src={specificLogoUrl}
-                        alt={`${chainId} logo`}
-                    />
-                )}
-            </React.Fragment>
-        );
+      const specificLogoUrl = CHAIN_LOGOS[chainId];
+      return (
+        <React.Fragment key={chainId}>
+          <img className="chain-logo" src={defaultLogoUrl} alt="Default logo" />
+          {specificLogoUrl && (
+            <img
+              className="chain-logo"
+              src={specificLogoUrl}
+              alt={`${chainId} logo`}
+            />
+          )}
+        </React.Fragment>
+      );
     });
-};
+  };
 
   return (
     <div className="col-md-3">
-      <Link className="text-decoration-none" href={`/token/${token.param0}`}>
+      <Link
+        className="text-decoration-none"
+        href={`/token/${token.tokenAddress}`}
+      >
         <div className="card-token">
           <div className="row d-flex align-items-center mb-5">
             <div className="col-3 text-start">
@@ -73,13 +71,13 @@ const TokenCard: React.FC<TokenProps> = ({ token }) => {
               />
             </div>
             <div className="col-9 text-end">
-              {renderChainLogos(token.param3)}
+              {renderChainLogos(token.eids.map((eid) => eid.toString()))}
             </div>
           </div>
           <div className="row">
             <div className="col-6 text-start">
-              <h3 className="card-token-name mb-1">{token.param1}</h3>
-              <h4 className="card-token-pair">{token.param2}/ETH</h4>
+              <h3 className="card-token-name mb-1">{token.name}</h3>
+              <h4 className="card-token-pair">{token.symbol}/ETH</h4>
             </div>
             <div className="col-6 d-flex flex-column justify-content-end align-items-end">
               <h3 className="card-token-price">{tokenPrice?.toString()} Ξ</h3>

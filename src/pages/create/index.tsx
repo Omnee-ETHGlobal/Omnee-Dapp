@@ -3,6 +3,8 @@ import useDeployByLoginMethod from "@/hooks/useDeployContract";
 import { Chain } from "@/types/chain";
 import { DeployData } from "@/types/deployData";
 import { ethers } from "ethers";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -29,6 +31,7 @@ const Create: React.FC = () => {
     symbol: "",
   });
   const [step, setStep] = useState(0);
+  const router = useRouter();
 
   const getFees = async () => {
     const result = await estimateGasFees(deployData, selectedChains);
@@ -583,7 +586,7 @@ const Create: React.FC = () => {
                 </div>
               </div>
               <div className="row justify-content-center mb-5">
-              <div className="col-12 col-sm-10 col-md-5 col-lg-5 text-start">
+                <div className="col-12 col-sm-10 col-md-5 col-lg-5 text-start">
                   <a
                     onClick={() => setStep(3)}
                     className="primary-btn d-block text-center mb-2 cursor-pointer"
@@ -873,7 +876,7 @@ const Create: React.FC = () => {
               </div>
 
               <div className="row justify-content-center mb-5">
-              <div className="col-12 col-sm-10 col-md-5 col-lg-5 text-start">
+                <div className="col-12 col-sm-10 col-md-5 col-lg-5 text-start">
                   <a
                     onClick={handleDeployClick}
                     data-toggle="modal"
@@ -942,9 +945,12 @@ const Create: React.FC = () => {
                     <p className="question-text mb-5">
                       Your contract has been successfully deployed !
                     </p>
-                    <a className="primary-btn d-block" data-dismiss="modal">
-                      Go to my token page
-                    </a>
+                    <button
+                      onClick={() => router.push("/app")}
+                      className="primary-btn d-block"
+                    >
+                      Go to app
+                    </button>
                   </div>
                 )}
                 {/*validate*/}
