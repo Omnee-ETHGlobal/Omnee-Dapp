@@ -11,7 +11,7 @@ import { useUniversalFactory } from "@/hooks/UniversalFactory/useUniversalFactor
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
 import { parse } from "path";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const IdPage: React.FC = () => {
@@ -23,6 +23,7 @@ const IdPage: React.FC = () => {
   const [sellLoading, setSellLoading] = React.useState<boolean>(false);
   const [update, setUpdate] = React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(false);
+  const [amountETH, setAmountETH] = useState(0);
   const { user } = useUser();
   const { id } = router.query;
   const { approveMetamask } = useToken(id as `0x${string}`);
@@ -30,11 +31,11 @@ const IdPage: React.FC = () => {
     user?.address as `0x${string}`,
     false,
     update,
-    (id as string)
+    id as string
   );
-useEffect(() => {
-  console.log(tokenDeploy);
-}, [tokenDeploy]);
+  useEffect(() => {
+    console.log(tokenDeploy);
+  }, [tokenDeploy]);
   useEffect(() => {
     const btnBuy = document.getElementById("btn-buy");
     const btnSell = document.getElementById("btn-sell");
@@ -94,6 +95,7 @@ useEffect(() => {
       const result = await BuyTokens(amountBuy, id as string);
       if (result.status === "success") {
         setAmountBuy(0);
+        setAmountETH(0);
         setUpdate(update + 1);
         toast.success(
           <span>
@@ -159,6 +161,22 @@ useEffect(() => {
     } finally {
       setSellLoading(false); // End loading for sell
     }
+  };
+
+  const handleETHChange = (e) => {
+    const value = e.target.value.replace(/,/g, '');
+    const ethValue = parseFloat(value);
+    if (isNaN(ethValue) || ethValue < 0) {
+      setAmountBuy(0);
+      setAmountETH(e.target.value);
+      return;
+    }
+    setAmountETH(e.target.value);
+    setAmountBuy(ethValue / parseFloat(tokenPrice || "0"));
+  };
+
+  const formatNumber = (number: number) => {
+    return number.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 8 });
   };
   return (
     <>
@@ -237,7 +255,8 @@ useEffect(() => {
                           backgroundColor: "transparent",
                           border: "none",
                         }}
-                        onChange={(e) => setAmountBuy(Number(e.target.value))}
+                        disabled
+                        value={amountBuy}
                       />
                     </div>
                     <div className="col-2 text-end">
@@ -265,8 +284,8 @@ useEffect(() => {
                           backgroundColor: "transparent",
                           border: "none",
                         }}
-                        disabled
-                        value={amountBuy * parseFloat(tokenPrice || "0")}
+                        onChange={handleETHChange}
+                        value={amountETH}
                       />
                     </div>
                     <div className="col-2 text-end">
