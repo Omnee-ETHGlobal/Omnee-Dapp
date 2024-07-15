@@ -14,3 +14,25 @@ interface TokenData {
     token: TokenData;
   }
   
+  interface TokenDataForUniversalFactory {
+    0: BigInt;
+    1: string;
+    2: string;
+    3: string;
+  }
+  
+  interface SuccessResult {
+    result: TokenDataForUniversalFactory;
+    status: "success";
+  }
+  
+  interface FailureResult {
+    error: Error;
+    status: "failure";
+  }
+  
+  type MulticallResult = SuccessResult | FailureResult;
+  
+
+  
+  

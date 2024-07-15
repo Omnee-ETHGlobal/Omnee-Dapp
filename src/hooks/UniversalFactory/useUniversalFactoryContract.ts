@@ -9,12 +9,12 @@ export const useUniversalFactory = (
   tokenId: string
 ) => {
   const [data, setData] = useState({
-    tokenDeploy: BigInt(0),
+    tokenDeploy: null as TokenDataForUniversalFactory | null,
   });
 
-useEffect(() => {
+  useEffect(() => {
     const fetch = async () => {
-      const res = await multicall(web3Config, {
+      const res: any[] = await multicall(web3Config, {
         contracts: [
           {
             ...UniversalFactoryContract,
@@ -24,14 +24,17 @@ useEffect(() => {
         ],
       });
       setData({
-        tokenDeploy: res[0].result as any,
+        tokenDeploy: res[0].result as TokenDataForUniversalFactory | null,
       });
       console.log(res);
     };
+
     if (account) fetch();
-}, [account, refresh, update]);
+  }, [account, refresh, update]);
+
   return data;
 };
+
 
 export const getQuoteDeployOFT = async (
     deployData: { name: string; symbol: string },

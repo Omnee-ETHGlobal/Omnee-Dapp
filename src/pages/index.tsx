@@ -26,7 +26,7 @@ const Create: React.FC = () => {
   const [deployLoading, setDeployLoading] = useState(false);
   const [showFailedModal, setShowFailedModal] = useState(false);
   const [estimatedFee, setEstimatedFee] = useState<bigint | null>(null);
-  const { deployByLoginMethod, estimateGasFees } = useDeployByLoginMethod();
+  const { estimateGasFees, deployToUniversalFactory } = useDeployByLoginMethod();
   const[transactionUrl, setTransactionUrl] = useState<string>("");
   const [deployData, setDeployData] = useState<DeployData>({
     name: "",
@@ -37,7 +37,6 @@ const Create: React.FC = () => {
 
   const getFees = async () => {
     const result = await estimateGasFees(deployData, selectedChains);
-    console.log(result);
     if (result) {
       setEstimatedFee(result);
     } else {
@@ -82,7 +81,7 @@ const Create: React.FC = () => {
   const handleDeployClick = async () => {
     setDeployLoading(true);
     try {
-      const result = await deployByLoginMethod(deployData, selectedChains);
+      const result = await deployToUniversalFactory(deployData, selectedChains);
       if (result) {
         setSuccessDeploy(true);
         console.log(result);

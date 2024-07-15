@@ -1,10 +1,11 @@
 import { useUser } from "@/context/web3UserContext";
 import Link from "next/link";
-import LoginButton from "../LoginButton/LoginButton";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 
 
 const Navbar: React.FC = () => {
-    const { loggedIn } = useUser();
+    const { address } = useAccount();
     return (
         <>
         {/*NAV DESKTOP*/}
@@ -31,7 +32,7 @@ const Navbar: React.FC = () => {
                 </a>
               </div>
               <div className="col-3 text-end">
-                <LoginButton />
+                <ConnectButton />
               </div>
             </div>
           </div>

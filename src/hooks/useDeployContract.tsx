@@ -3,12 +3,12 @@ import { ethers } from "ethers";
 import { UniversalFactoryContract, web3Config } from "@/config";
 import { useUser } from "@/context/web3UserContext";
 import { getQuoteDeployOFT } from "@/hooks/UniversalFactory/useUniversalFactoryContract";
-import { useWriteContract } from "wagmi";
+import { useAccount, useWriteContract } from "wagmi";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { DeployData } from "@/types/deployData";
 
 const useDeployByLoginMethod = () => {
-  const { user, ethersSigner } = useUser();
+  const { address, isConnected } = useAccount();
   const { writeContractAsync } = useWriteContract();
   const [deployLoading, setDeployLoading] = useState(false);
 
@@ -16,10 +16,9 @@ const useDeployByLoginMethod = () => {
     deployData: DeployData,
     selectedChains: number[]
   ) => {
-    if (!user?.address) return;
+    if (!isConnected) return;
     try {
       console.log("deployData", selectedChains);
-
       const nativeFee = await getQuoteDeployOFT(
         deployData,
         selectedChains,
@@ -32,38 +31,12 @@ const useDeployByLoginMethod = () => {
     }
   };
 
-  const deployToUniversalFactoryEthers = async (
-    deployData: DeployData,
-    selectedChains: number[]
-  ) => {
-    if (ethersSigner) {
-      const universalFactorySC = new ethers.Contract(
-        UniversalFactoryContract.address,
-        UniversalFactoryContract.abi,
-        ethersSigner
-      );
-      const estimatedFee = await estimateGasFees(deployData, selectedChains);
-
-      const tx = await universalFactorySC.deployOFT(
-        deployData.name,
-        deployData.symbol,
-        selectedChains,
-        "0x000301001101000000000000000000000000000f4240",
-        { value: estimatedFee }
-      );
-      const result = await tx.wait();
-      return result;
-    } else {
-      throw new Error("Ethers signer not available");
-    }
-  };
 
   const deployToUniversalFactory = async (
     deployData: DeployData,
     selectedChains: number[]
   ) => {
-    if (!user || !user.address)
-      throw new Error("User not authenticated or address not found");
+    if (!isConnected) return;
     setDeployLoading(true);
     try {
       const estimatedFee = await estimateGasFees(deployData, selectedChains);
@@ -89,26 +62,8 @@ const useDeployByLoginMethod = () => {
     }
   };
 
-  const deployByLoginMethod = useCallback(
-    async (deployData: any, selectedChains: any) => {
-      setDeployLoading(true);
-      try {
-        const result =
-          user?.loginMethod === "Google"
-            ? await deployToUniversalFactoryEthers(deployData, selectedChains)
-            : await deployToUniversalFactory(deployData, selectedChains);
-        console.log(result);
-        return result;
-      } catch (error) {
-        return error;
-      } finally {
-        setDeployLoading(false);
-      }
-    },
-    [user?.loginMethod, ethersSigner]
-  );
 
-  return { deployByLoginMethod, deployLoading, estimateGasFees };
+  return { deployToUniversalFactory, deployLoading, estimateGasFees };
 };
 
 export default useDeployByLoginMethod;
