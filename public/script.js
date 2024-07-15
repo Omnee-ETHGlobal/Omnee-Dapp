@@ -63,5 +63,46 @@ document.addEventListener('DOMContentLoaded', function () {
         sellContent.classList.remove('d-none');
         buyContent.classList.add('d-none');
     });
+    
+
+
+
 });
 
+
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.getElementById('menu-toggle');
+    const extraLinks = document.getElementById('extra-links');
+
+    menuToggle.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (extraLinks.classList.contains('d-none')) {
+            extraLinks.classList.remove('d-none');
+            extraLinks.classList.add('show', 'd-block');
+        } else {
+            extraLinks.classList.remove('show', 'd-block');
+            extraLinks.classList.add('d-none');
+        }
+    });
+});
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const navbar = document.querySelector('.container-nav'); // Assurez-vous que cela ne cible que la navbar
+    let lastScrollTop = 0;
+
+    window.addEventListener("scroll", function() {
+        let st = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (st > lastScrollTop) {
+            // Scroll vers le bas
+            navbar.style.top = "-120px"; // Adaptez cette valeur pour assurer que la navbar est complètement cachée
+        } else {
+            // Scroll vers le haut
+            navbar.style.top = "20px"; // La valeur initiale quand la navbar doit être visible
+        }
+        lastScrollTop = st <= 0 ? 0 : st; // Pour les navigateurs mobiles qui permettent de scroller au-delà du top
+    }, false);
+});

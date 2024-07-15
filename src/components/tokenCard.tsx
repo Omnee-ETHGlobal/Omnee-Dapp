@@ -43,7 +43,6 @@ const TokenCard: React.FC<TokenProps> = ({ token }) => {
       const specificLogoUrl = CHAIN_LOGOS[chainId];
       return (
         <React.Fragment key={chainId}>
-          <img className="chain-logo" src={defaultLogoUrl} alt="Default logo" />
           {specificLogoUrl && (
             <img
               className="chain-logo"
@@ -72,6 +71,7 @@ const TokenCard: React.FC<TokenProps> = ({ token }) => {
               />
             </div>
             <div className="col-9 text-end">
+            <img className="chain-logo" src={defaultLogoUrl} alt="Default logo" />
               {renderChainLogos(token.eids.map((eid) => eid.toString()))}
             </div>
           </div>

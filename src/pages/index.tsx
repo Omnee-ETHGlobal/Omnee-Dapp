@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import {chainsData} from "../config/chainConfig";
 
 const Create: React.FC = () => {
   const [selectedChains, setSelectedChains] = useState<number[]>([]);
@@ -28,6 +29,7 @@ const Create: React.FC = () => {
   const [estimatedFee, setEstimatedFee] = useState<bigint | null>(null);
   const { estimateGasFees, deployToUniversalFactory } = useDeployByLoginMethod();
   const[transactionUrl, setTransactionUrl] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [deployData, setDeployData] = useState<DeployData>({
     name: "",
     symbol: "",
@@ -44,12 +46,7 @@ const Create: React.FC = () => {
     }
   };
 
-  const chains: Chain[] = [
-    { id: 40231, name: "Arbitrum", logo: "./images/chains/arb.png" },
-    { id: 40232, name: "Optimism", logo: "./images/chains/op.png" },
-    { id: 40170, name: "Scroll", logo: "./images/chains/scro.png" },
-    { id: 40275, name: "Zircuit", logo: "./images/chains/zircuit.png" },
-  ];
+
 
   const getSelectedChainNames = (
     selectedChains: number[],
@@ -60,7 +57,7 @@ const Create: React.FC = () => {
       .map((chain) => chain.name)
       .join(", ");
   };
-
+  
   const handleNextStep = () => {
     if (!deployData.name || !deployData.symbol) {
       setError("Error, please verify your information");
@@ -69,8 +66,19 @@ const Create: React.FC = () => {
       setStep(step + 1);
     }
   };
+  
+  const selectedChainNames = getSelectedChainNames(selectedChains, Object.values(chainsData));
 
-  const selectedChainNames = getSelectedChainNames(selectedChains, chains);
+  useEffect(() => {
+    if (successDeploy) {
+      setIsModalOpen(true);
+    }
+  }, [successDeploy]);
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+    router.push("/app");
+  };
 
   useEffect(() => {
     if (step === 4) {
@@ -458,9 +466,9 @@ const Create: React.FC = () => {
                       <div className="col-6 col-md-6">
                         <div
                           className={`answer-clickable align-items-center ${
-                            selectedChains.includes(40231) ? "active" : ""
+                            selectedChains.includes(chainsData.Arbitrum.id) ? "active" : ""
                           }`}
-                          onClick={() => handleChainChange(40231)}
+                          onClick={() => handleChainChange(chainsData.Arbitrum.id)}
                         >
                           <img
                             src="./images/chains/arb.png"
@@ -473,9 +481,9 @@ const Create: React.FC = () => {
                       <div className="col-6 col-md-6">
                         <div
                           className={`answer-clickable align-items-center ${
-                            selectedChains.includes(40232) ? "active" : ""
+                            selectedChains.includes(chainsData.Optimism.id) ? "active" : ""
                           }`}
-                          onClick={() => handleChainChange(40232)}
+                          onClick={() => handleChainChange(chainsData.Optimism.id)}
                         >
                           <img
                             src="./images/chains/op.png"
@@ -490,9 +498,9 @@ const Create: React.FC = () => {
                       <div className="col-6 col-md-6">
                         <div
                           className={`answer-clickable align-items-center ${
-                            selectedChains.includes(40170) ? "active" : ""
+                            selectedChains.includes(chainsData.Scroll.id) ? "active" : ""
                           }`}
-                          onClick={() => handleChainChange(40170)}
+                          onClick={() => handleChainChange(chainsData.Scroll.id)}
                         >
                           <img
                             src="./images/chains/scro.png"
@@ -505,9 +513,9 @@ const Create: React.FC = () => {
                       <div className="col-6 col-md-6">
                         <div
                           className={`answer-clickable align-items-center ${
-                            selectedChains.includes(40275) ? "active" : ""
+                            selectedChains.includes(chainsData.Zircuit.id) ? "active" : ""
                           }`}
-                          onClick={() => handleChainChange(40275)}
+                          onClick={() => handleChainChange(chainsData.Zircuit.id)}
                         >
                           <img
                             src="./images/chains/zircuit.png"

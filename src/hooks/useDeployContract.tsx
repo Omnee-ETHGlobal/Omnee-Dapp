@@ -19,6 +19,7 @@ const useDeployByLoginMethod = () => {
     if (!isConnected) return;
     try {
       console.log("deployData", selectedChains);
+
       const nativeFee = await getQuoteDeployOFT(
         deployData,
         selectedChains,
@@ -39,6 +40,7 @@ const useDeployByLoginMethod = () => {
     if (!isConnected) return;
     setDeployLoading(true);
     try {
+
       const estimatedFee = await estimateGasFees(deployData, selectedChains);
       const tx = await writeContractAsync({
         ...UniversalFactoryContract,

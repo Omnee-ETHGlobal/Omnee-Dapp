@@ -2,10 +2,48 @@ import { useUser } from "@/context/web3UserContext";
 import Link from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
+import { useEffect } from "react";
 
 
 const Navbar: React.FC = () => {
-    const { address } = useAccount();
+
+  useEffect(() => {
+    const menuToggle = document.getElementById('menu-toggle');
+    const extraLinks = document.getElementById('extra-links');
+
+    if (menuToggle && extraLinks) {
+        menuToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (extraLinks.classList.contains('d-none')) {
+                extraLinks.classList.remove('d-none');
+                extraLinks.classList.add('show', 'd-block');
+            } else {
+                extraLinks.classList.remove('show', 'd-block');
+                extraLinks.classList.add('d-none');
+            }
+        });
+    }
+
+    const navbar = document.querySelector('.container-nav') as HTMLElement;
+    let lastScrollTop = 0;
+
+    const handleScroll = () => {
+        let st = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (st > lastScrollTop) {
+            navbar.style.top = "-120px";
+        } else {
+            navbar.style.top = "20px";
+        }
+        lastScrollTop = st <= 0 ? 0 : st;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+        window.removeEventListener("scroll", handleScroll);
+    };
+}, []);
     return (
         <>
         {/*NAV DESKTOP*/}
@@ -17,7 +55,7 @@ const Navbar: React.FC = () => {
             <div className="row align-items-center">
               <div className="col-3">
                 <a href="/">
-                  <img src="./images/logo.svg" width="110px" alt="" />
+                  <img src="/images/logo.svg" width="110px" alt="" />
                 </a>
               </div>
               <div className="col-6 text-center">
@@ -53,13 +91,10 @@ const Navbar: React.FC = () => {
           >
             <div className="row">
               <div className="col-4">
-                <img src="./images/logo.svg" alt="" width="90px" />
+                <img src="/images/logo.svg" alt="" width="90px" />
               </div>
               <div className="col-8 text-end">
-                <a href="#" className="primary-btn-white-xsmall me-2">
-                  Connect your wallet
-                </a>
-                <a href="#" id="menu-toggle">
+                         <a href="#" id="menu-toggle">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -82,6 +117,7 @@ const Navbar: React.FC = () => {
                Create Token
                 </Link>
               </div>
+      
               <div className="col-12 text-center">
                 <Link href="/app" className="simple-link d-block mb-3">
                   All tokens
@@ -92,6 +128,9 @@ const Navbar: React.FC = () => {
                   Github
                 </a>
               </div>
+              <div className="col-12 text-center justify-content-center d-flex">
+              <ConnectButton />
+                </div>
             </div>
           </div>
         </div>

@@ -31,7 +31,6 @@ const useBondingContract = () => {
   const BuyTokenMetamask = async (buyAmount: number, tokenAddress: string) => {
     setBuyTokenLoading(true);
     try {
-      // Convertir le montant de buyAmount (en Ether) en Wei
       const buyAmountInWei = ethers.utils.parseEther(buyAmount.toString()).toBigInt();
       
       const tx = await writeContractAsync({
