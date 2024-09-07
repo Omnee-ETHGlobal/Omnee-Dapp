@@ -8,11 +8,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import {chainsData} from "../config/chainConfig";
+import { chainsData } from "../config/chainConfig";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
 
 const Create: React.FC = () => {
   const [selectedChains, setSelectedChains] = useState<number[]>([]);
   const [successDeploy, setSuccessDeploy] = useState(false);
+  const { address } = useAccount();
   const handleChainChange = (chainId: number) => {
     setSelectedChains((prev) => {
       const isAlreadySelected = prev.includes(chainId);
@@ -27,8 +30,9 @@ const Create: React.FC = () => {
   const [deployLoading, setDeployLoading] = useState(false);
   const [showFailedModal, setShowFailedModal] = useState(false);
   const [estimatedFee, setEstimatedFee] = useState<bigint | null>(null);
-  const { estimateGasFees, deployToUniversalFactory } = useDeployByLoginMethod();
-  const[transactionUrl, setTransactionUrl] = useState<string>("");
+  const { estimateGasFees, deployToUniversalFactory } =
+    useDeployByLoginMethod();
+  const [transactionUrl, setTransactionUrl] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deployData, setDeployData] = useState<DeployData>({
     name: "",
@@ -46,8 +50,6 @@ const Create: React.FC = () => {
     }
   };
 
-
-
   const getSelectedChainNames = (
     selectedChains: number[],
     allChains: Chain[]
@@ -57,7 +59,7 @@ const Create: React.FC = () => {
       .map((chain) => chain.name)
       .join(", ");
   };
-  
+
   const handleNextStep = () => {
     if (!deployData.name || !deployData.symbol) {
       setError("Error, please verify your information");
@@ -66,8 +68,11 @@ const Create: React.FC = () => {
       setStep(step + 1);
     }
   };
-  
-  const selectedChainNames = getSelectedChainNames(selectedChains, Object.values(chainsData));
+
+  const selectedChainNames = getSelectedChainNames(
+    selectedChains,
+    Object.values(chainsData)
+  );
 
   useEffect(() => {
     if (successDeploy) {
@@ -109,7 +114,7 @@ const Create: React.FC = () => {
   };
   return (
     <>
-    <Navbar />
+      <Navbar />
       <section className="section-hero d-flex align-items-center min-vh-100">
         <div className="container-o text-center">
           {/*get started*/}
@@ -146,16 +151,20 @@ const Create: React.FC = () => {
                     these straightforward steps to bring your project to life in
                     minutes!
                   </p>
-                  <button
-                    className="primary-btn d-inline-block mb-5"
-                    onClick={() => setStep(1)}
-                    data-aos="fade-in"
-                    data-aos-duration={500}
-                    data-aos-delay={100}
-                    data-aos-easing="ease"
-                  >
-                    Get started{" "}
-                  </button>
+                  {!address ? (
+                    <ConnectButton />
+                  ) : (
+                    <button
+                      className="primary-btn d-inline-block mb-5"
+                      onClick={() => setStep(1)}
+                      data-aos="fade-in"
+                      data-aos-duration={500}
+                      data-aos-delay={100}
+                      data-aos-easing="ease"
+                    >
+                      Get started{" "}
+                    </button>
+                  )}
                 </div>
                 <div className="col-12 col-sm-10 col-md-5 col-lg-5 offset-md-1 offset-lg-1 text-start">
                   <div
@@ -367,7 +376,6 @@ const Create: React.FC = () => {
                     </p>
                   )}
                   <a
-               
                     onClick={handleNextStep}
                     className="primary-btn d-block text-center mb-2 cursor-pointer"
                   >
@@ -466,9 +474,13 @@ const Create: React.FC = () => {
                       <div className="col-6 col-md-6">
                         <div
                           className={`answer-clickable align-items-center ${
-                            selectedChains.includes(chainsData.Arbitrum.id) ? "active" : ""
+                            selectedChains.includes(chainsData.Arbitrum.id)
+                              ? "active"
+                              : ""
                           }`}
-                          onClick={() => handleChainChange(chainsData.Arbitrum.id)}
+                          onClick={() =>
+                            handleChainChange(chainsData.Arbitrum.id)
+                          }
                         >
                           <img
                             src="./images/chains/arb.png"
@@ -481,9 +493,13 @@ const Create: React.FC = () => {
                       <div className="col-6 col-md-6">
                         <div
                           className={`answer-clickable align-items-center ${
-                            selectedChains.includes(chainsData.Optimism.id) ? "active" : ""
+                            selectedChains.includes(chainsData.Optimism.id)
+                              ? "active"
+                              : ""
                           }`}
-                          onClick={() => handleChainChange(chainsData.Optimism.id)}
+                          onClick={() =>
+                            handleChainChange(chainsData.Optimism.id)
+                          }
                         >
                           <img
                             src="./images/chains/op.png"
@@ -498,9 +514,13 @@ const Create: React.FC = () => {
                       <div className="col-6 col-md-6">
                         <div
                           className={`answer-clickable align-items-center ${
-                            selectedChains.includes(chainsData.Scroll.id) ? "active" : ""
+                            selectedChains.includes(chainsData.Scroll.id)
+                              ? "active"
+                              : ""
                           }`}
-                          onClick={() => handleChainChange(chainsData.Scroll.id)}
+                          onClick={() =>
+                            handleChainChange(chainsData.Scroll.id)
+                          }
                         >
                           <img
                             src="./images/chains/scro.png"
@@ -513,9 +533,13 @@ const Create: React.FC = () => {
                       <div className="col-6 col-md-6">
                         <div
                           className={`answer-clickable align-items-center ${
-                            selectedChains.includes(chainsData.Zircuit.id) ? "active" : ""
+                            selectedChains.includes(chainsData.Zircuit.id)
+                              ? "active"
+                              : ""
                           }`}
-                          onClick={() => handleChainChange(chainsData.Zircuit.id)}
+                          onClick={() =>
+                            handleChainChange(chainsData.Zircuit.id)
+                          }
                         >
                           <img
                             src="./images/chains/zircuit.png"
@@ -889,15 +913,16 @@ const Create: React.FC = () => {
                     <p className="question-text mb-5">
                       Your contract has been successfully deployed !
                     </p>
-                    <a href={transactionUrl} target="_blank" className="question-text mb-5">
-                      See on Blockscout explorer 
-                    </a>
-                    <button
-                      onClick={() => router.push("/app")}
-                      className="primary-btn d-block"
+                    <a
+                      href={transactionUrl}
+                      target="_blank"
+                      className="question-text mb-5"
                     >
+                      See on Blockscout explorer
+                    </a>
+                    <a href="/app" className="primary-btn  w-100 mt-2 d-block">
                       Go to app
-                    </button>
+                    </a>
                   </div>
                 )}
                 {/*validate*/}

@@ -1,7 +1,5 @@
-import { useUser } from "@/context/web3UserContext";
 import Link from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useAccount } from "wagmi";
 import { useEffect } from "react";
 
 
