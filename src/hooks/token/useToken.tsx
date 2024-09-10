@@ -1,10 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ethers } from "ethers";
 import ERC20_ABI from "@/config/abi/erc20.json";
-import { useUser } from "@/context/web3UserContext";
-import { waitForTransactionReceipt } from "viem/actions";
 import { useAccount, useWriteContract } from "wagmi";
-import { web3Config } from "@/config";
 import { toast } from "react-toastify";
 
 const useToken = (tokenAdress: `0x${string}`) => {
@@ -13,7 +10,6 @@ const useToken = (tokenAdress: `0x${string}`) => {
   const [deployLoading, setDeployLoading] = useState(false);
   const [approvalLoading, setApprovalLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { address, isConnected } = useAccount();
   const [approved, setApproved] = useState<boolean>(false);
   const { writeContractAsync } = useWriteContract();
 
