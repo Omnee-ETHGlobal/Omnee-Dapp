@@ -1,8 +1,7 @@
 import { BaseConfig,  BondingCurveContract, web3Config } from "@/config";
 import { multicall } from "wagmi/actions";
-import { useState, useCallback } from "react";
-import { BigNumber, ethers } from "ethers";
-import { useUser } from "@/context/web3UserContext";
+import { useState } from "react";
+import { ethers } from "ethers";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { useAccount, useWriteContract } from "wagmi";
 import { toast } from "react-toastify";
