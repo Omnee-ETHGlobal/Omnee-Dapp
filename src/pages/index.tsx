@@ -6,7 +6,6 @@ import { Step3 } from "@/components/Step/step3";
 import { Step4 } from "@/components/Step/step4";
 import { useDeploy } from "@/context/DeployContext";
 import { useStep } from "@/context/StepContext";
-import useDeployByLoginMethod from "@/hooks/useDeployContract";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 

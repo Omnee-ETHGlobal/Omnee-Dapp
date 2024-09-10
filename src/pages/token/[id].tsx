@@ -2,7 +2,6 @@
 
 import Navbar from "@/components/navbar/navbar";
 import { BLOCKSCOUT_BASE_URL } from "@/config/api/blockscoutApi";
-import { useUser } from "@/context/web3UserContext";
 import useBondingContract, {
   getTokenPrice,
 } from "@/hooks/BondingCurvFactory/useBondingCurvContracts";
