@@ -1,29 +1,28 @@
-import { useState, useCallback } from "react";
-import { ethers } from "ethers";
+import { useEffect, useState } from "react";
 import { UniversalFactoryContract, web3Config } from "@/config";
-import { useUser } from "@/context/web3UserContext";
 import { getQuoteDeployOFT } from "@/hooks/UniversalFactory/useUniversalFactoryContract";
-import { useWriteContract } from "wagmi";
+import { useAccount, useWriteContract } from "wagmi";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { DeployData } from "@/types/deployData";
 
 const useDeployByLoginMethod = () => {
-  const { user, ethersSigner } = useUser();
+  const { address, isConnected } = useAccount();
   const { writeContractAsync } = useWriteContract();
   const [deployLoading, setDeployLoading] = useState(false);
 
+  // Fonction pour estimer les frais de gas
   const estimateGasFees = async (
     deployData: DeployData,
     selectedChains: number[]
   ) => {
-    if (!user?.address) return;
+    if (!isConnected) return;
     try {
       console.log("deployData", selectedChains);
 
       const nativeFee = await getQuoteDeployOFT(
         deployData,
         selectedChains,
-        "0x000301001101000000000000000000000000000f4240"
+        "0x000301001101000000000000000000000000000f4240" // Exemple de valeur d'argument
       );
       console.log("nativeFee", nativeFee);
       return nativeFee;
@@ -32,41 +31,19 @@ const useDeployByLoginMethod = () => {
     }
   };
 
-  const deployToUniversalFactoryEthers = async (
-    deployData: DeployData,
-    selectedChains: number[]
-  ) => {
-    if (ethersSigner) {
-      const universalFactorySC = new ethers.Contract(
-        UniversalFactoryContract.address,
-        UniversalFactoryContract.abi,
-        ethersSigner
-      );
-      const estimatedFee = await estimateGasFees(deployData, selectedChains);
 
-      const tx = await universalFactorySC.deployOFT(
-        deployData.name,
-        deployData.symbol,
-        selectedChains,
-        "0x000301001101000000000000000000000000000f4240",
-        { value: estimatedFee }
-      );
-      const result = await tx.wait();
-      return result;
-    } else {
-      throw new Error("Ethers signer not available");
-    }
-  };
-
+  // Fonction pour déployer le contrat via UniversalFactory
   const deployToUniversalFactory = async (
     deployData: DeployData,
     selectedChains: number[]
   ) => {
-    if (!user || !user.address)
-      throw new Error("User not authenticated or address not found");
+    if (!isConnected) return;
     setDeployLoading(true);
+
     try {
+      // Appel de l'estimation des frais
       const estimatedFee = await estimateGasFees(deployData, selectedChains);
+      
       const tx = await writeContractAsync({
         ...UniversalFactoryContract,
         functionName: "deployOFT",
@@ -89,26 +66,16 @@ const useDeployByLoginMethod = () => {
     }
   };
 
-  const deployByLoginMethod = useCallback(
-    async (deployData: any, selectedChains: any) => {
-      setDeployLoading(true);
-      try {
-        const result =
-          user?.loginMethod === "Google"
-            ? await deployToUniversalFactoryEthers(deployData, selectedChains)
-            : await deployToUniversalFactory(deployData, selectedChains);
-        console.log(result);
-        return result;
-      } catch (error) {
-        return error;
-      } finally {
-        setDeployLoading(false);
-      }
-    },
-    [user?.loginMethod, ethersSigner]
-  );
+  useEffect(() => {
+    console.log("deploy loading" + deployLoading);
+  }, [deployLoading]);
 
-  return { deployByLoginMethod, deployLoading, estimateGasFees };
+  // Retour des fonctions et variables utiles du hook
+  return {
+    deployToUniversalFactory,
+    deployLoading,
+    estimateGasFees,
+  };
 };
 
 export default useDeployByLoginMethod;

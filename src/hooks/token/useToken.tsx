@@ -3,10 +3,9 @@ import { ethers } from "ethers";
 import ERC20_ABI from "@/config/abi/erc20.json";
 import { useUser } from "@/context/web3UserContext";
 import { waitForTransactionReceipt } from "viem/actions";
-import { useWriteContract } from "wagmi";
+import { useAccount, useWriteContract } from "wagmi";
 import { web3Config } from "@/config";
 import { toast } from "react-toastify";
-
 
 const useToken = (tokenAdress: `0x${string}`) => {
   const [contract, setContract] = useState<ethers.Contract | null>(null);
@@ -14,55 +13,31 @@ const useToken = (tokenAdress: `0x${string}`) => {
   const [deployLoading, setDeployLoading] = useState(false);
   const [approvalLoading, setApprovalLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { user, ethersSigner } = useUser();
+  const { address, isConnected } = useAccount();
   const [approved, setApproved] = useState<boolean>(false);
   const { writeContractAsync } = useWriteContract();
 
-  useEffect(() => {
-    if (!tokenAdress) return;
-    const initializeContract = async () => {
-      try {
-        const tokenContract = new ethers.Contract(
-          tokenAdress,
-          ERC20_ABI,
-          ethersSigner
-        );
-        setContract(tokenContract);
-      } catch (err) {
-        setError("Failed to initialize contract");
-        console.error(err);
-      }
-    };
-    initializeContract();
-  }, [tokenAdress]);
-
-  const approveMetamask = async (spender: string, amount: ethers.BigNumberish) => {
-    if (!user || !user.address) {
-      throw new Error("User not authenticated or address not found");
-    }
-    
+  const approveMetamask = async (spender: string, amount: number) => {
     setDeployLoading(true);
     try {
-
+      const amountInWei = ethers.utils.parseUnits(amount.toString(), "ether");
+      console.log("montant approve",ethers.utils.parseUnits(amount.toString()));
       const tx = await writeContractAsync({
         address: tokenAdress,
         abi: ERC20_ABI,
         functionName: "approve",
-        args: [spender, amount],
+        args: [spender, amountInWei],
       });
-  
-      const result = await waitForTransactionReceipt(web3Config as any, {
-        hash: tx as any,
-      });
-  
-      console.log("Approval result", result);
-      return result;
+      return tx;
     } catch (error) {
+      console.error("Approval failed", error);
       toast.error("Approval failed");
+      return null; 
     } finally {
       setDeployLoading(false);
     }
   };
+  
 
   return {
     contract,

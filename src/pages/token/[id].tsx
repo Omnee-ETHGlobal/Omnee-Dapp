@@ -13,29 +13,28 @@ import { useRouter } from "next/router";
 import { parse } from "path";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useAccount } from "wagmi";
 
 const IdPage: React.FC = () => {
   const [tokenPrice, setTokenPrice] = React.useState<string | null>(null);
   const router = useRouter();
-  const { BuyTokens, SellTokens } = useBondingContract();
+  const { BuyTokenMetamask, sellTokenMetamask, sellTokenLoading } = useBondingContract();
   const [amountBuy, setAmountBuy] = React.useState<number>(0);
   const [amountSell, setAmountSell] = React.useState<number>(0);
   const [sellLoading, setSellLoading] = React.useState<boolean>(false);
   const [update, setUpdate] = React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [amountETH, setAmountETH] = useState(0);
-  const { user } = useUser();
+  const { address, isConnected } = useAccount();
   const { id } = router.query;
   const { approveMetamask } = useToken(id as `0x${string}`);
   const { tokenDeploy } = useUniversalFactory(
-    user?.address as `0x${string}`,
+    address as `0x${string}`,
     false,
     update,
     id as string
   );
-  useEffect(() => {
-    console.log(tokenDeploy);
-  }, [tokenDeploy]);
+
   useEffect(() => {
     const btnBuy = document.getElementById("btn-buy");
     const btnSell = document.getElementById("btn-sell");
@@ -73,6 +72,22 @@ const IdPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if(id) {
+      const fetchPrice = async () => {
+        try {
+          const priceInWei = await getTokenPrice(id as string);
+          const priceInEth = ethers.utils.formatEther(priceInWei);
+          setTokenPrice(priceInEth);
+        } catch (error) {
+          console.error("Error fetching token price:", error);
+          setTokenPrice("Unavailable");
+        }
+      };
+      fetchPrice();
+    }
+  },[]);
+
+  useEffect(() => {
     const fetchPrice = async () => {
       try {
         const priceInWei = await getTokenPrice(id as string);
@@ -84,15 +99,14 @@ const IdPage: React.FC = () => {
       }
     };
     fetchPrice();
-    console.log(tokenDeploy);
   }, [id, update]);
 
   const handleBuy = async () => {
-    if (!user) return;
+    if (!isConnected) return;
     if (amountBuy <= 0) return toast.error("Amount must be greater than 0");
     setLoading(true);
     try {
-      const result = await BuyTokens(amountBuy, id as string);
+      const result = await BuyTokenMetamask(amountETH, id as string);
       if (result.status === "success") {
         setAmountBuy(0);
         setAmountETH(0);
@@ -117,25 +131,23 @@ const IdPage: React.FC = () => {
       console.log(error);
       toast.error(`Transaction failed: ${error}`);
     } finally {
-      setLoading(false); // End loading
+      setLoading(false); 
     }
   };
 
-  const handleSell = async () => {
-    if (!tokenPrice || !amountSell) return;
-    setSellLoading(true); // Start loading for sell
+  const handleSell = async () => {  
+    if (!tokenPrice || amountSell <= 0) return;
     try {
-      const pricePerTokenInWei = ethers.utils.parseUnits(tokenPrice, "ether");
-      const sellAmountWei = pricePerTokenInWei.mul(
-        ethers.BigNumber.from(amountSell)
-      );
-      const approveResult = await approveMetamask(
-        id as `0x${string}`,
-        sellAmountWei
-      );
+      console.log("Calling approveMetamask with:", id, amountSell);
+      const approveResult = await approveMetamask(id as `0x${string}`, amountSell);
+      console.log(approveResult, "approve result");
+  
       if (approveResult) {
-        const sellResult = await SellTokens(amountSell, id as string);
-        if (sellResult.status === "success") {
+        console.log("Approval successful, proceeding to sell");
+        const sellResult = await sellTokenMetamask(amountSell, id as string);
+        console.log(sellResult);
+  
+        if (sellResult && sellResult.status === "success") {
           setAmountSell(0);
           setUpdate(update + 1);
           toast.success(
@@ -154,17 +166,19 @@ const IdPage: React.FC = () => {
           console.log(sellResult);
           toast.error("Transaction failed");
         }
+      } else {
+        toast.error("Approval failed, cannot proceed to sell");
       }
     } catch (error) {
       console.log(error);
-      toast.error(`Transaction failed: ${error}`);
-    } finally {
-      setSellLoading(false); // End loading for sell
+      toast.error(`Transaction failed`);
     }
   };
+  
+  
 
-  const handleETHChange = (e) => {
-    const value = e.target.value.replace(/,/g, '');
+  const handleETHChange = (e: any) => {
+    const value = e.target.value.replace(/,/g, "");
     const ethValue = parseFloat(value);
     if (isNaN(ethValue) || ethValue < 0) {
       setAmountBuy(0);
@@ -173,11 +187,10 @@ const IdPage: React.FC = () => {
     }
     setAmountETH(e.target.value);
     setAmountBuy(ethValue / parseFloat(tokenPrice || "0"));
-  };
+  }; 
 
-  const formatNumber = (number: number) => {
-    return number.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 8 });
-  };
+
+
   return (
     <>
       <Navbar />
@@ -188,7 +201,9 @@ const IdPage: React.FC = () => {
               <h3 className="" style={{ color: "rgba(255, 255, 255, 0.3)" }}>
                 PAIR/ETH
               </h3>
-              <h1 className="hero-title mb-3">Token Name</h1>
+              <h1 className="hero-title mb-3">
+                {tokenDeploy ? tokenDeploy[2] : "-"}
+              </h1>
               <div className="row">
                 <div className="col-10 mb-3">
                   <a
@@ -401,7 +416,7 @@ const IdPage: React.FC = () => {
                   </div>
                   <div className="col-7 text-end">
                     <h4 className="review-value align-items-center white">
-                      NME
+                      {tokenDeploy ? tokenDeploy[3] : "-"}
                     </h4>
                   </div>
                 </div>

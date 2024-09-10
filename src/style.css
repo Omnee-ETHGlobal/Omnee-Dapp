@@ -572,10 +572,20 @@ body {
 
 }
 
-
 .modal-content {
   background-color: #111111 !important;
   color: #fff !important;
+  opacity: 1 !important;
+z-index: 1050 !important;
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 8px;
+  padding: 30px;
+   box-shadow: "0 4px 6px rgba(0,0,0,0.1)";
+     transform: translate(-50%, -50%) !important;
 }
 .modal-header, .modal-footer {
   border: none;
