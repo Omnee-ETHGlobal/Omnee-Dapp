@@ -40,7 +40,9 @@ export const Step0 = () => {
                     minutes!
                   </p>
                   {!address ? (
+                    <div className="pb-4">
                     <ConnectButton />
+                    </div>
                   ) : (
                     <button
                       className="primary-btn d-inline-block mb-5"
